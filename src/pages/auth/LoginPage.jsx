@@ -13,6 +13,27 @@ const ROLE_DASHBOARDS = {
   ADMIN: '/admin/dashboard',
 }
 
+const ROLE_PATH_PREFIXES = {
+  CUSTOMER: '/customer/',
+  AGENT: '/agent/',
+  ADMIN: '/admin/',
+}
+
+function normalizeRole(role) {
+  return (role ?? '').replace(/^ROLE_/, '')
+}
+
+function getPostLoginPath(role, from) {
+  const dashboard = ROLE_DASHBOARDS[role] ?? '/login'
+  const allowedPrefix = ROLE_PATH_PREFIXES[role]
+
+  if (from && allowedPrefix && from.startsWith(allowedPrefix)) {
+    return from
+  }
+
+  return dashboard
+}
+
 function LoginPage() {
   const { login } = useAuth()
   const { showToast } = useToast()
@@ -32,8 +53,8 @@ function LoginPage() {
       const authUser = response.data?.data ?? response.data
       login(authUser)
       const from = location.state?.from?.pathname
-      const dashboard = ROLE_DASHBOARDS[authUser.role?.replace(/^ROLE_/, '')] ?? '/login'
-      navigate(from || dashboard, { replace: true })
+      const role = normalizeRole(authUser.role)
+      navigate(getPostLoginPath(role, from), { replace: true })
     } catch (error) {
       showToast(
         error.response?.data?.message ?? 'Login failed. Please check your credentials.',
