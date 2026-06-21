@@ -1,37 +1,12 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 
-/**
- * @typedef {'success'|'error'|'info'|'warning'} ToastType
- *
- * @typedef {Object} ToastItem
- * @property {number}    id
- * @property {string}    message
- * @property {ToastType} type
- * @property {number}    duration  - ms before auto-dismiss; 0 = persistent
- */
-
 const ToastContext = createContext(null)
 
 let _toastId = 0
 
-/**
- * ToastProvider
- *
- * Manages a FIFO queue of toasts and renders them in a fixed overlay
- * in the bottom-right corner of the viewport.
- *
- * @param {{ children: React.ReactNode }} props
- */
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([])
 
-  /**
-   * showToast — adds a new toast to the queue.
-   *
-   * @param {string}    message  - the notification text
-   * @param {ToastType} type     - visual variant
-   * @param {number}    [duration=4000] - auto-dismiss delay in ms; 0 = persistent
-   */
   const showToast = useCallback((message, type = 'info', duration = 4000) => {
     const id = ++_toastId
     setToasts((prev) => [...prev, { id, message, type, duration }])
@@ -43,18 +18,12 @@ export function ToastProvider({ children }) {
     }
   }, [])
 
-  /**
-   * dismiss — manually removes a toast by id.
-   *
-   * @param {number} id
-   */
+
   const dismiss = useCallback((id) => {
     setToasts((prev) => prev.filter((t) => t.id !== id))
   }, [])
 
-  /**
-   * Color classes per toast type.
-   */
+ 
   const typeClasses = {
     success: 'bg-green-600 text-white',
     error: 'bg-red-600 text-white',
@@ -66,7 +35,6 @@ export function ToastProvider({ children }) {
     <ToastContext.Provider value={{ showToast, dismiss }}>
       {children}
 
-      {/* Toast overlay — fixed bottom-right */}
       {toasts.length > 0 && (
         <div
           role="region"
@@ -96,12 +64,6 @@ export function ToastProvider({ children }) {
   )
 }
 
-/**
- * useToast — consume the ToastContext.
- *
- * @returns {{ showToast: function(string, ToastType, number?): void, dismiss: function(number): void }}
- * @throws {Error} if called outside of ToastProvider
- */
 export function useToast() {
   const ctx = useContext(ToastContext)
   if (!ctx) {
