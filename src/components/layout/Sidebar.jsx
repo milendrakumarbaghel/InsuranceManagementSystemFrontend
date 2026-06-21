@@ -16,7 +16,7 @@ const CUSTOMER_LINKS = [
     icon: (
       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
+      </svg>     
     ),
   },
   {
@@ -57,7 +57,6 @@ const CUSTOMER_LINKS = [
   },
 ]
 
-/** @type {NavItem[]} */
 const AGENT_LINKS = [
   {
     label: 'Dashboard',
@@ -115,7 +114,6 @@ const AGENT_LINKS = [
   },
 ]
 
-/** @type {NavItem[]} */
 const ADMIN_LINKS = [
   {
     label: 'Dashboard',
@@ -182,7 +180,6 @@ const ADMIN_LINKS = [
   },
 ]
 
-/** @type {Record<string, NavItem[]>} */
 const ROLE_LINKS = {
   CUSTOMER: CUSTOMER_LINKS,
   AGENT: AGENT_LINKS,
@@ -194,7 +191,7 @@ function Sidebar({ role, isOpen, onClose }) {
 
   return (
     <>
-      {/* Mobile backdrop overlay */}
+      {/* Mobile background translucent blur overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-20 lg:hidden"
@@ -203,14 +200,13 @@ function Sidebar({ role, isOpen, onClose }) {
         />
       )}
 
-      {/* Sidebar panel */}
+      {/* Primary Slide Panel Sidebar Menu Wrapper */}
       <aside
         className={[
           'fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-20',
           'flex flex-col overflow-y-auto',
           'transition-transform duration-200 ease-in-out',
-          // Desktop: always visible; mobile: slide in/out
-          'lg:translate-x-0',
+          // Obeys isOpen boolean to collapse off-screen across all monitors
           isOpen ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
         aria-label="Main navigation"
