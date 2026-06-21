@@ -34,6 +34,7 @@ import PurchasePolicyPage from '../pages/customer/PurchasePolicyPage.jsx'
 import MyPoliciesPage from '../pages/customer/MyPoliciesPage.jsx'
 import PolicyDetailPage from '../pages/customer/PolicyDetailPage.jsx'
 import MakePaymentPage from '../pages/customer/MakePaymentPage.jsx'
+import MyPaymentsPage from '../pages/customer/MyPaymentsPage.jsx'
 import MyClaimsPage from '../pages/customer/MyClaimsPage.jsx'
 import RaiseClaimPage from '../pages/customer/RaiseClaimPage.jsx'
 import ClaimDetailPage from '../pages/customer/ClaimDetailPage.jsx'
@@ -81,6 +82,7 @@ function AppRouter() {
           <Route path="/customer/claims" element={<MyClaimsPage />} />
           <Route path="/customer/claims/raise/:policyId" element={<RaiseClaimPage />} />
           <Route path="/customer/claims/:id" element={<ClaimDetailPage />} />
+          <Route path="/customer/payments" element={<MyPaymentsPage />} />
         </Route>
       </Route>
 
