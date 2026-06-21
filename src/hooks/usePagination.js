@@ -1,10 +1,3 @@
-/**
- * @fileoverview usePagination hook — syncs page, size, sort, sortDir, and filter
- * state to the URL via react-router-dom's useSearchParams.
- *
- * Requirements: 16, 21, 22
- */
-
 import { useSearchParams } from 'react-router-dom'
 import {
   DEFAULT_PAGE_SIZE,
@@ -13,52 +6,13 @@ import {
   DEFAULT_SORT_DIR,
 } from '../utils/constants'
 
-/**
- * Clamps a numeric value to the inclusive range [min, max].
- *
- * @param {number} value
- * @param {number} min
- * @param {number} max
- * @returns {number}
- */
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max)
 }
 
-/** Known pagination/sort param keys — used to identify filter params. */
+// Known pagination/sort param keys — used to identify filter params.
 const PAGINATION_KEYS = new Set(['page', 'size', 'sort', 'sortDir'])
 
-/**
- * usePagination
- *
- * Reads `page`, `size`, `sort`, `sortDir`, and any additional filter keys from
- * the URL search params. All state changes are written back to the URL so the
- * view is bookmarkable and shareable.
- *
- * Defaults (sourced from constants):
- *   page    → 0
- *   size    → DEFAULT_PAGE_SIZE (10)
- *   sort    → DEFAULT_SORT ('createdAt')
- *   sortDir → DEFAULT_SORT_DIR ('DESC')
- *
- * @param {object} [options]
- * @param {number}          [options.defaultPageSize=DEFAULT_PAGE_SIZE]
- * @param {string}          [options.defaultSort=DEFAULT_SORT]
- * @param {'ASC'|'DESC'}    [options.defaultSortDir=DEFAULT_SORT_DIR]
- *
- * @returns {{
- *   params: object,
- *   page: number,
- *   pageSize: number,
- *   sort: string,
- *   sortDir: string,
- *   setPage: (n: number) => void,
- *   setPageSize: (n: number) => void,
- *   setSort: (field: string, dir: string) => void,
- *   setFilter: (key: string, value: string|number|undefined) => void,
- *   resetFilters: () => void,
- * }}
- */
 export function usePagination({
   defaultPageSize = DEFAULT_PAGE_SIZE,
   defaultSort = DEFAULT_SORT,
@@ -66,7 +20,7 @@ export function usePagination({
 } = {}) {
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // ── Derive current values from URL ─────────────────────────────────────────
+  // Derive current values from URL
 
   const page = clamp(
     parseInt(searchParams.get('page') ?? '0', 10) || 0,
@@ -91,10 +45,6 @@ export function usePagination({
     }
   }
 
-  /**
-   * The params object suitable for passing directly to API calls.
-   * Maps camelCase names expected by the API layer.
-   */
   const params = {
     page,
     pageSize,
@@ -103,12 +53,8 @@ export function usePagination({
     ...filters,
   }
 
-  // ── Setters ────────────────────────────────────────────────────────────────
+  // Setters
 
-  /**
-   * Navigate to a specific page (0-indexed).
-   * @param {number} n
-   */
   function setPage(n) {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev)
@@ -117,10 +63,6 @@ export function usePagination({
     })
   }
 
-  /**
-   * Update the page size. Value is clamped to [1, 100] and page resets to 0.
-   * @param {number} n
-   */
   function setPageSize(n) {
     const clamped = clamp(n, 1, MAX_PAGE_SIZE)
     setSearchParams((prev) => {
@@ -131,11 +73,6 @@ export function usePagination({
     })
   }
 
-  /**
-   * Update sort field and direction. Resets page to 0.
-   * @param {string} field
-   * @param {'ASC'|'DESC'} dir
-   */
   function setSort(field, dir) {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev)
@@ -146,12 +83,6 @@ export function usePagination({
     })
   }
 
-  /**
-   * Set a single filter param. Passing undefined or '' removes the key.
-   * Always resets page to 0.
-   * @param {string} key
-   * @param {string|number|undefined} value
-   */
   function setFilter(key, value) {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev)
@@ -165,10 +96,6 @@ export function usePagination({
     })
   }
 
-  /**
-   * Remove all filter params and reset pagination to defaults.
-   * Keeps only the four core pagination keys.
-   */
   function resetFilters() {
     setSearchParams({
       page: '0',

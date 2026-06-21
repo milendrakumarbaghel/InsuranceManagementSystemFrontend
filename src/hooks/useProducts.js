@@ -2,11 +2,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import * as productApi from '../api/productApi.js'
 import { queryKeys } from '../utils/queryKeys.js'
 
-/**
- * useProducts — paginated/filtered list of products.
- *
- * @param {Object} [params] - Query parameters (page, size, sort, sortDir, active, search, etc.)
- */
+
+ // useProducts — paginated/filtered list of products.
 export const useProducts = (params) => {
   return useQuery({
     queryKey: queryKeys.products.list(params),
@@ -14,11 +11,8 @@ export const useProducts = (params) => {
   })
 }
 
-/**
- * useProduct — single product by ID.
- *
- * @param {number|string} id - Product ID
- */
+
+// useProduct — single product by ID.
 export const useProduct = (id) => {
   return useQuery({
     queryKey: queryKeys.products.detail(id),
@@ -27,10 +21,8 @@ export const useProduct = (id) => {
   })
 }
 
-/**
- * useCreateProduct — mutation to create a new insurance product (ADMIN).
- * Invalidates all product cache entries on success.
- */
+// useCreateProduct — mutation to create a new insurance product (ADMIN).
+// Invalidates all product cache entries on success.
 export const useCreateProduct = () => {
   const queryClient = useQueryClient()
 
@@ -42,11 +34,9 @@ export const useCreateProduct = () => {
   })
 }
 
-/**
- * useUpdateProduct — mutation to update an existing insurance product (ADMIN).
- * Accepts `{ id, data }`. Invalidates all product cache entries and the specific
- * product detail on success.
- */
+// useUpdateProduct — mutation to update an existing insurance product (ADMIN).
+// Accepts `{ id, data }`. Invalidates all product cache entries and the specific
+// product detail on success.
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient()
 
@@ -59,11 +49,10 @@ export const useUpdateProduct = () => {
   })
 }
 
-/**
- * useToggleProduct — mutation to activate/deactivate a product (ADMIN).
- * Accepts `{ id, active }`. Invalidates all product cache entries and the specific
- * product detail on success.
- */
+// useToggleProduct — mutation to activate/deactivate a product (ADMIN).
+// Accepts `{ id, active }`. Invalidates all product cache entries and the specific
+// product detail on success.
+
 export const useToggleProduct = () => {
   const queryClient = useQueryClient()
 

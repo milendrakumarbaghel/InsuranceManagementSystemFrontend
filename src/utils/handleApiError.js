@@ -26,22 +26,16 @@ function getBackendMessage(error) {
   return error?.response?.data?.message ?? null
 }
 
-/**
- * Handles API errors by mapping HTTP status codes to appropriate Toast messages.
- *
- * Status code → message strategy:
- *   400  → backend message (validation / bad request)
- *   403  → "You do not have permission to perform this action"
- *   404  → backend message or "Resource not found"
- *   409  → backend message (conflict)
- *   422  → backend message (unprocessable entity)
- *   500  → generic server error message
- *   no response → network error message
- *
- * @param {import('axios').AxiosError} error  - the error thrown by Axios
- * @param {function(string, string): void} showToast - toast function from useToast()
- *   signature: showToast(message, type) where type is 'error' | 'success' | ...
- */
+
+//  Status code → message strategy:
+//    400  → backend message (validation / bad request)
+//    403  → "You do not have permission to perform this action"
+//    404  → backend message or "Resource not found"
+//    409  → backend message (conflict)
+//    422  → backend message (unprocessable entity)
+//    500  → generic server error message
+//    no response → network error message
+
 export function handleApiError(error, showToast) {
   if (!error.response) {
     // Network error — no HTTP response received
