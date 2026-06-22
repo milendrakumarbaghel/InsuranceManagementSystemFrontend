@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import * as claimApi from '../api/claimApi.js'
 import { queryKeys } from '../utils/queryKeys.js'
+import { useToast } from '../context/ToastContext.jsx'
+import { handleApiError } from '../utils/handleApiError.js'
 
 export const useClaims = (params) =>
   useQuery({
@@ -23,41 +25,53 @@ export const useClaim = (id) =>
 
 export const useRaiseClaim = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: (data) => claimApi.raiseClaim(data).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.claims.all() }),
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useReviewClaim = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id, data }) => claimApi.reviewClaim(id, data).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
       qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useApproveClaim = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id, remarks }) => claimApi.approveClaim(id, remarks).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
       qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useRejectClaim = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id, remarks }) => claimApi.rejectClaim(id, remarks).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
       qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }

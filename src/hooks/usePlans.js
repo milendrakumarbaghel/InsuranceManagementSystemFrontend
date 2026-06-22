@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import * as planApi from '../api/planApi.js'
 import { queryKeys } from '../utils/queryKeys.js'
+import { useToast } from '../context/ToastContext.jsx'
+import { handleApiError } from '../utils/handleApiError.js'
 
 export const usePlans = (params) =>
   useQuery({
@@ -24,41 +26,53 @@ export const usePlan = (id) =>
 
 export const useCreatePlan = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: (data) => planApi.createPlan(data).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.plans.all() }),
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useUpdatePlan = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id, data }) => planApi.updatePlan(id, data).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.plans.all() })
       qc.invalidateQueries({ queryKey: queryKeys.plans.detail(id) })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useTogglePlan = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id }) => planApi.deactivatePlan(id).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.plans.all() })
       qc.invalidateQueries({ queryKey: queryKeys.plans.detail(id) })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
 export const useActivatePlan = () => {
   const qc = useQueryClient()
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: ({ id }) => planApi.activatePlan(id).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.plans.all() })
       qc.invalidateQueries({ queryKey: queryKeys.plans.detail(id) })
     },
+    onError: (error) => handleApiError(error, showToast)
   })
 }

@@ -1,17 +1,22 @@
 import { useMutation } from '@tanstack/react-query'
 import * as authApi from '../api/authApi.js'
+import { useToast } from '../context/ToastContext.jsx'
+import { handleApiError } from '../utils/handleApiError.js'
 
-// useLoginMutation — wraps authApi.login in a TanStack Query mutation.
 export const useLoginMutation = () => {
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: (payload) => authApi.login(payload).then((res) => res.data),
+    onError: (error) => handleApiError(error, showToast)
   })
 }
 
-
-// useRegisterMutation — wraps authApi.register in a TanStack Query mutation.
 export const useRegisterMutation = () => {
+  const { showToast } = useToast()
+  
   return useMutation({
     mutationFn: (payload) => authApi.register(payload).then((res) => res.data),
+    onError: (error) => handleApiError(error, showToast)
   })
 }
