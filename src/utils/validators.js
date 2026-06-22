@@ -59,9 +59,9 @@ export const issuePolicySchema = z.object({
 })
 
 const documentSchema = z.object({
-  documentName: z.string().min(3, 'Document name required').max(150),
-  documentType: z.string().min(2, 'Document type required').max(80),
-  documentReference: z.string().min(5, 'Document reference required').max(500),
+  file: z
+    .any()
+    .refine((files) => files?.length === 1, 'Select a document'),
 })
 
 export const raiseClaimSchema = z.object({

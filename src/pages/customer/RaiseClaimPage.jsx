@@ -1,18 +1,48 @@
 import { useFieldArray, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 import { raiseClaimSchema } from '../../utils/validators.js'
 import { useRaiseClaim } from '../../hooks/useClaims.js'
 import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import FormInput from '../../components/common/FormInput.jsx'
 import FormTextarea from '../../components/common/FormTextarea.jsx'
+import * as claimApi from '../../api/claimApi.js'
+
+function getSelectedFiles(documents = []) {
+  return documents.map((doc) => doc.file?.[0]).filter(Boolean)
+}
+
+function normalizeDocumentName(name) {
+  const normalized = String(name ?? 'document')
+    .replace(/[^a-zA-Z0-9\s_().-]/g, '-')
+    .trim()
+    .slice(0, 150)
+
+  return normalized.length >= 3 ? normalized : 'document'
+}
+
+function normalizeDocumentType(type) {
+  return /^[a-zA-Z\s/-]{2,80}$/.test(type ?? '') ? type : 'Document'
+}
+
+function toTemporaryDocument(file) {
+  const documentName = normalizeDocumentName(file.name)
+
+  return {
+    documentName,
+    documentType: normalizeDocumentType(file.type),
+    documentReference: `Pending upload for ${documentName}`,
+  }
+}
 
 function RaiseClaimPage() {
   const { policyId } = useParams()
   const navigate = useNavigate()
   const { showToast } = useToast()
   const raiseClaim = useRaiseClaim()
+  const [isUploading, setIsUploading] = useState(false)
 
   const { register, handleSubmit, control, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(raiseClaimSchema),
@@ -21,23 +51,56 @@ function RaiseClaimPage() {
       claimAmount: 0,
       claimReason: '',
       incidentDate: '',
-      documents: [{ documentName: '', documentType: '', documentReference: '' }],
+      documents: [{ file: undefined }],
     },
   })
 
   const { fields, append, remove } = useFieldArray({ control, name: 'documents' })
 
-  function onSubmit(data) {
-    raiseClaim.mutate({ ...data, policyId: Number(data.policyId), claimAmount: Number(data.claimAmount) }, {
-      onSuccess: () => {
-        showToast('Claim submitted successfully!', 'success')
-        navigate('/customer/claims')
-      },
-      onError: (err) => handleApiError(err, showToast),
-    })
+  async function onSubmit(data) {
+    const files = getSelectedFiles(data.documents)
+    const payload = {
+      ...data,
+      policyId: Number(data.policyId),
+      claimAmount: Number(data.claimAmount),
+      documents: files.map(toTemporaryDocument),
+    }
+
+    setIsUploading(true)
+
+    try {
+      const createdClaimResponse = await raiseClaim.mutateAsync(payload)
+      const createdClaim = createdClaimResponse?.data ?? createdClaimResponse
+      const claimId = createdClaim?.claimId
+
+      if (!claimId) {
+        throw new Error('Claim was created, but claim id was not returned.')
+      }
+
+      await Promise.all(files.map((file) => claimApi.uploadClaimDocument(claimId, file)))
+
+      const temporaryDocuments = createdClaim.documents ?? []
+      await Promise.allSettled(
+        temporaryDocuments
+          .map((doc) => doc.claimDocumentId)
+          .filter(Boolean)
+          .map((documentId) => claimApi.deleteClaimDocument(documentId))
+      )
+
+      showToast('Claim submitted successfully!', 'success')
+      navigate('/customer/claims')
+    } catch (err) {
+      if (err.response) {
+        handleApiError(err, showToast)
+      } else {
+        showToast(err.message || 'Claim submission failed.', 'error')
+      }
+    } finally {
+      setIsUploading(false)
+    }
   }
 
-  const isBusy = isSubmitting || raiseClaim.isPending
+  const isBusy = isSubmitting || raiseClaim.isPending || isUploading
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
@@ -51,7 +114,7 @@ function RaiseClaimPage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <label className="text-sm font-medium text-gray-700">Documents <span className="text-red-500">*</span></label>
-            <button type="button" onClick={() => append({ documentName: '', documentType: '', documentReference: '' })}
+            <button type="button" onClick={() => append({ file: undefined })}
               className="text-xs text-blue-600 hover:underline">+ Add Document</button>
           </div>
           {errors.documents && <p className="text-xs text-red-600 mb-2">{errors.documents.message}</p>}
@@ -63,9 +126,7 @@ function RaiseClaimPage() {
                   <button type="button" onClick={() => remove(index)} className="text-xs text-red-500 hover:underline">Remove</button>
                 )}
               </div>
-              <FormInput label="Document Name" name={`documents.${index}.documentName`} required error={errors.documents?.[index]?.documentName?.message} {...register(`documents.${index}.documentName`)} />
-              <FormInput label="Document Type" name={`documents.${index}.documentType`} required placeholder="e.g. application/pdf" error={errors.documents?.[index]?.documentType?.message} {...register(`documents.${index}.documentType`)} />
-              <FormInput label="Document URL / Reference" name={`documents.${index}.documentReference`} required placeholder="https://..." error={errors.documents?.[index]?.documentReference?.message} {...register(`documents.${index}.documentReference`)} />
+              <FormInput label="Upload Document" name={`documents.${index}.file`} type="file" required error={errors.documents?.[index]?.file?.message} {...register(`documents.${index}.file`)} />
             </div>
           ))}
         </div>

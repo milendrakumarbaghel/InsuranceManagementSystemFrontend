@@ -15,6 +15,18 @@ export const getClaimByNumber = (claimNumber) =>
 export const raiseClaim = (data) =>
   axiosInstance.post('/claims', data)
 
+export const uploadClaimDocument = (claimId, file) => {
+  const formData = new FormData()
+  formData.append('file', file)
+
+  return axiosInstance.post(`/claim-documents/upload/${claimId}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+}
+
+export const deleteClaimDocument = (documentId) =>
+  axiosInstance.delete(`/claim-documents/${documentId}`)
+
 export const reviewClaim = (id, data) =>
   axiosInstance.put(`/claims/${id}/review`, data)
 
