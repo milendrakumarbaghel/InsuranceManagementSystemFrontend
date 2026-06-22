@@ -6,6 +6,10 @@ import { handleApiError } from '../../utils/handleApiError.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 
+function getUserId(row) {
+  return row.id ?? row.userId ?? row.UserId
+}
+
 function UserListPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
   const { data, isLoading } = useUsers(params)
@@ -17,7 +21,14 @@ function UserListPage() {
   const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
 
   function handleToggle(row) {
-    toggleUser.mutate({ id: row.id, active: !row.active }, {
+    const userId = getUserId(row)
+
+    if (!userId) {
+      showToast('Unable to update this user because the user id is missing.', 'error')
+      return
+    }
+
+    toggleUser.mutate({ id: userId, active: !row.active }, {
       onSuccess: () => showToast(`User "${row.email}" ${!row.active ? 'activated' : 'deactivated'}.`, 'success'),
       onError: (err) => handleApiError(err, showToast),
     })
