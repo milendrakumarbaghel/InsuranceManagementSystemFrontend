@@ -17,10 +17,6 @@ const STATUS_CLASS_MAP = {
 
 const FALLBACK_CLASS = 'bg-gray-100 text-gray-600'
 
-/**
- * Convert SCREAMING_SNAKE_CASE to Title Case for display.
- * e.g. "PENDING_PAYMENT" → "Pending Payment"
- */
 function formatLabel(status) {
   return status
     .split('_')

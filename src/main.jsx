@@ -33,10 +33,7 @@ const queryClient = new QueryClient({
   },
 })
 
-/**
- * Provider hierarchy (outermost → innermost):
- * StrictMode → QueryClientProvider → BrowserRouter → AuthProvider → ToastProvider → AppRouter
- */
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

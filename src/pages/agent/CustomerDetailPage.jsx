@@ -7,16 +7,6 @@ import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
 
-/**
- * CustomerDetailPage — displays full customer profile and their policies.
- *
- * Features:
- * - Loads customer via useCustomer(id) from useParams
- * - Displays all customer profile fields
- * - Secondary paginated policy table filtered by customerId
- *
- * Requirements: 9, 17
- */
 
 function DetailItem({ label, value }) {
   return (

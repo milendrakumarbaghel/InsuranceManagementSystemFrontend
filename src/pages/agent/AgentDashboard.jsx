@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom'
 
-/**
- * AgentDashboard — summary cards linking to agent sections.
- *
- * Requirements: 9, 10, 11, 17
- */
 
 const DASHBOARD_CARDS = [
   {

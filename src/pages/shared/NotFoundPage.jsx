@@ -1,11 +1,5 @@
 import { Link } from 'react-router-dom'
 
-/**
- * NotFoundPage
- *
- * Catch-all route for any path that does not match the application's
- * route tree. Displays a 404 message with a link back to the home page.
- */
 function NotFoundPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-4 text-center">

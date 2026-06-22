@@ -1,12 +1,5 @@
 import { Link } from 'react-router-dom'
 
-/**
- * UnauthorizedPage
- *
- * Rendered when an authenticated user attempts to access a route outside
- * their allowed role. Displays a 403 message with a link back to the
- * application home.
- */
 function UnauthorizedPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50 px-4 text-center">

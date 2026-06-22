@@ -1,40 +1,8 @@
-/**
- * @fileoverview Centralised API error handler.
- *
- * Maps HTTP status codes from the backend ApiError envelope to user-facing
- * Toast messages.  All domain hook mutation `onError` callbacks should call
- * this function.
- *
- * Backend ApiError envelope shape:
- * {
- *   timestamp:  string,
- *   statusCode: number,
- *   errorType:  string,
- *   message:    string,
- *   path:       string
- * }
- */
 
-/**
- * Extracts a readable message from an Axios error response.
- * The backend wraps errors in `response.data.message`.
- *
- * @param {import('axios').AxiosError} error - the Axios error object
- * @returns {string|null} backend message or null if not available
- */
 function getBackendMessage(error) {
   return error?.response?.data?.message ?? null
 }
-
-
-//  Status code → message strategy:
-//    400  → backend message (validation / bad request)
-//    403  → "You do not have permission to perform this action"
-//    404  → backend message or "Resource not found"
-//    409  → backend message (conflict)
-//    422  → backend message (unprocessable entity)
-//    500  → generic server error message
-//    no response → network error message
+ 
 
 export function handleApiError(error, showToast) {
   if (!error.response) {

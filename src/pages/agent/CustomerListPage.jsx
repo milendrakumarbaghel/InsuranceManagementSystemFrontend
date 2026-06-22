@@ -4,17 +4,6 @@ import { usePagination } from '../../hooks/usePagination.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import SearchFilterBar from '../../components/common/SearchFilterBar.jsx'
 
-/**
- * CustomerListPage — paginated, searchable list of customers for agent.
- *
- * Features:
- * - Paginated table via useCustomers + usePagination
- * - Text search by name via SearchFilterBar
- * - Sortable columns: name, email, username
- * - Row click navigates to /agent/customers/:id
- *
- * Requirements: 9, 17
- */
 
 const FILTER_DEFS = [
   { key: 'search', label: 'Search', type: 'text' },
