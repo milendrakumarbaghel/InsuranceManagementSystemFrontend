@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function getUserId(row) {
   return row.id ?? row.userId ?? row.UserId
@@ -52,6 +53,7 @@ function UserListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Users</h1>
         <Link to="/admin/users/create-agent" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">+ Create Agent</Link>

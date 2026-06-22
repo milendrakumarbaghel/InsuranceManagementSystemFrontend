@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom'
 import { usePlansByProduct } from '../../hooks/usePlans.js'
 import { formatCurrency } from '../../utils/formatters.js'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function PlansPage() {
   const { id: productId } = useParams()
@@ -12,6 +13,7 @@ function PlansPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Available Plans</h1>
         <p className="text-gray-500 mt-1">Choose a plan to purchase.</p>

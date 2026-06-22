@@ -11,6 +11,7 @@ import FormInput from '../../components/common/FormInput.jsx'
 import FormSelect from '../../components/common/FormSelect.jsx'
 import FormTextarea from '../../components/common/FormTextarea.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 const PREMIUM_OPTIONS = [
   { value: '', label: '— Select type —' },
@@ -86,6 +87,7 @@ function PlanFormPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">{isEditMode ? 'Edit Plan' : 'New Plan'}</h1>
       </div>

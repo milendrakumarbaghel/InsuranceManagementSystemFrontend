@@ -6,6 +6,7 @@ import { formatDate } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 
 function DetailItem({ label, value }) {
@@ -78,6 +79,7 @@ function CustomerDetailPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
+      <BackButton />
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{fullName}</h1>

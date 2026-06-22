@@ -10,6 +10,7 @@ import { handleApiError } from '../../utils/handleApiError.js'
 import FormInput from '../../components/common/FormInput.jsx'
 import FormSelect from '../../components/common/FormSelect.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 const PAYMENT_MODE_OPTIONS = [
   { value: '', label: '— Select mode —' },
@@ -107,6 +108,7 @@ function MakePaymentPage() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+      <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Make Payment</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
         {!hasPaymentDetails && (

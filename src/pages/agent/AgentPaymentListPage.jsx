@@ -2,6 +2,7 @@ import { usePayments } from '../../hooks/usePayments.js'
 import { usePagination } from '../../hooks/usePagination.js'
 import { formatDate, formatCurrency } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function AgentPaymentListPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -22,6 +23,7 @@ function AgentPaymentListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Payments</h1>
       <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No payments found."
         paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />

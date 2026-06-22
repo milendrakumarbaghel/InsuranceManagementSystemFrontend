@@ -9,6 +9,7 @@ import { handleApiError } from '../../utils/handleApiError.js'
 import FormInput from '../../components/common/FormInput.jsx'
 import FormTextarea from '../../components/common/FormTextarea.jsx'
 import * as claimApi from '../../api/claimApi.js'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function getSelectedFiles(documents = []) {
   return documents.map((doc) => doc.file?.[0]).filter(Boolean)
@@ -104,6 +105,7 @@ function RaiseClaimPage() {
 
   return (
     <div className="p-6 max-w-2xl mx-auto">
+      <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Raise Claim</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 bg-white rounded-xl border border-gray-200 p-6">
         <input type="hidden" {...register('policyId', { valueAsNumber: true })} />
