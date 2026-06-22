@@ -17,12 +17,10 @@ function CustomerProfile() {
   const [editing, setEditing] = useState(false)
 
   const profile = data?.data ?? data ?? null
+  console.log('profile', profile)
   const hasProfile = !!profile?.customerId
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({
-    resolver: zodResolver(customerProfileSchema),
-    defaultValues: { nomineeName: '', nomineeRelation: '', dateOfBirth: '', address: '', city: '', state: '', pinCode: '' },
-  })
+
 
   useEffect(() => {
     if (profile && hasProfile) {
