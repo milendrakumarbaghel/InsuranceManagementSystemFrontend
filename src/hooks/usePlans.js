@@ -51,3 +51,14 @@ export const useTogglePlan = () => {
     },
   })
 }
+
+export const useActivatePlan = () => {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ id }) => planApi.activatePlan(id).then((r) => r.data),
+    onSuccess: (_d, { id }) => {
+      qc.invalidateQueries({ queryKey: queryKeys.plans.all() })
+      qc.invalidateQueries({ queryKey: queryKeys.plans.detail(id) })
+    },
+  })
+}
