@@ -10,10 +10,11 @@ const CARDS = [
 
 function CustomerDashboard() {
   const { user } = useAuth()
+  console.log('CustomerDashboard user:', user)
   return (
     <div className="p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Welcome, {user?.email}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Welcome, {user?.name}</h1>
         <p className="mt-1 text-sm text-gray-500">Manage your insurance policies and claims.</p>
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
