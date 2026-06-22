@@ -3,6 +3,7 @@ import { useCustomers } from '../../hooks/useCustomers.js'
 import { usePagination } from '../../hooks/usePagination.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import SearchFilterBar from '../../components/common/SearchFilterBar.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 
 const FILTER_DEFS = [
@@ -53,6 +54,7 @@ function CustomerListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Customers</h1>
         <p className="text-gray-500 mt-1">

@@ -3,6 +3,7 @@ import { useMyPolicies } from '../../hooks/usePolicies.js'
 import { formatDate } from '../../utils/formatters.js'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function MyPoliciesPage() {
   const { data, isLoading } = useMyPolicies()
@@ -12,6 +13,7 @@ function MyPoliciesPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">My Policies</h1>
       {policies.length === 0 ? (
         <div className="text-center py-12 text-gray-400">

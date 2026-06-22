@@ -3,6 +3,7 @@ import { useProducts } from '../../hooks/useProducts.js'
 import { usePagination } from '../../hooks/usePagination.js'
 import Spinner from '../../components/common/Spinner.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function ProductsListPage() {
   const { params, page, pageSize, setPage } = usePagination()
@@ -15,6 +16,7 @@ function ProductsListPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Insurance Products</h1>
         <p className="text-gray-500 mt-1">Select a product to view available plans.</p>

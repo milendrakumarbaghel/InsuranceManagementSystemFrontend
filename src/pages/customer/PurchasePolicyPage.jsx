@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import { formatCurrency } from '../../utils/formatters.js'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function PurchasePolicyPage() {
   const { planId } = useParams()
@@ -30,6 +31,7 @@ function PurchasePolicyPage() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+      <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Confirm Purchase</h1>
       <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4 mb-6">
         <h2 className="text-lg font-semibold text-gray-900">{plan.planName}</h2>

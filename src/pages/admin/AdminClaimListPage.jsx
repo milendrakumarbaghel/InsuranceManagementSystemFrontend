@@ -4,6 +4,7 @@ import { usePagination } from '../../hooks/usePagination.js'
 import { formatCurrency } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function AdminClaimListPage() {
   const navigate = useNavigate()
@@ -24,6 +25,7 @@ function AdminClaimListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">All Claims</h1>
         <p className="text-gray-500 mt-1">Click a row to review or decide on a claim.</p>

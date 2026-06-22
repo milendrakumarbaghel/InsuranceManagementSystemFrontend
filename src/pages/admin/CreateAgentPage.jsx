@@ -6,6 +6,7 @@ import { useCreateAgent } from '../../hooks/useUsers.js'
 import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import FormInput from '../../components/common/FormInput.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 const createAgentSchema = z.object({
   fullName: z.string().min(3, 'Full name must be at least 3 characters').max(100),
@@ -47,6 +48,7 @@ function CreateAgentPage() {
 
   return (
     <div className="p-6 max-w-lg mx-auto">
+      <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Create Agent</h1>
         <p className="text-gray-500 mt-1">Create a new agent account.</p>

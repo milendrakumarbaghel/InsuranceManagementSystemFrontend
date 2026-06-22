@@ -3,6 +3,7 @@ import { useMyClaims } from '../../hooks/useClaims.js'
 import { formatDate, formatCurrency } from '../../utils/formatters.js'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function MyClaimsPage() {
   const { data, isLoading } = useMyClaims()
@@ -12,6 +13,7 @@ function MyClaimsPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
+      <BackButton />
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">My Claims</h1>
         <Link to="/customer/policies" className="rounded-lg bg-orange-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-700">+ Raise Claim</Link>

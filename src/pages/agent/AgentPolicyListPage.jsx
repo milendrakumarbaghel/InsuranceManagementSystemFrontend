@@ -4,6 +4,7 @@ import { usePagination } from '../../hooks/usePagination.js'
 import { formatDate } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 const STATUS_OPTIONS = ['', 'PENDING_PAYMENT', 'ACTIVE', 'EXPIRED', 'CANCELLED']
 
@@ -26,6 +27,7 @@ function AgentPolicyListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Policies</h1>
         <select value={status} onChange={(e) => setStatus(e.target.value)}

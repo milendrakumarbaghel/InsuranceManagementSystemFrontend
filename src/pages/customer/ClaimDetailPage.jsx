@@ -4,6 +4,7 @@ import { useClaimHistory } from '../../hooks/useClaimHistory.js'
 import { formatDate, formatCurrency } from '../../utils/formatters.js'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function ClaimDetailPage() {
   const { id } = useParams()
@@ -17,7 +18,9 @@ function ClaimDetailPage() {
   if (!claim) return <div className="p-6 text-center text-gray-500">Claim not found.</div>
 
   return (
+    
     <div className="p-6 max-w-3xl mx-auto space-y-6">
+       <BackButton />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">{claim.claimNumber}</h1>

@@ -17,3 +17,6 @@ export const updatePlan = (id, data) =>
 
 export const deactivatePlan = (id) =>
   axiosInstance.patch(`/plans/${id}/deactivate`)
+
+export const activatePlan = (id) =>
+  axiosInstance.patch(`/plans/${id}/activate`)

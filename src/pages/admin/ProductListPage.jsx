@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
+import BackButton from '../../components/common/BackButton.jsx'
 
 function ProductListPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -44,6 +45,7 @@ function ProductListPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
+      <BackButton />
       <div className="mb-6 flex items-center justify-between">
         <div><h1 className="text-2xl font-bold text-gray-900">Products</h1></div>
         <Link to="/admin/products/new" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">+ New Product</Link>

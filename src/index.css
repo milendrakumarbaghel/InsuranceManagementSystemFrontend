@@ -2,10 +2,75 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Global Base */
 html {
-  background: #f9fafb;
+  background-color: #f9fafb;
+  color: #111827;
 }
 
 html.dark {
-  background: #030712;
+  background-color: #030712;
+  color: #f3f4f6;
+  color-scheme: dark;
 }
+
+/* =========================================
+   GLOBAL DARK MODE COLOR MAPPING
+   Automatically inverts light classes to 
+   readable dark mode equivalents.
+   ========================================= */
+
+/* 1. Backgrounds & Cards */
+.dark .bg-white { background-color: #111827 !important; } /* Deep gray for cards */
+.dark .bg-gray-50 { background-color: #030712 !important; } /* Pure dark for backgrounds */
+.dark .bg-gray-100 { background-color: #1f2937 !important; }
+.dark .hover\:bg-gray-50:hover { background-color: #1f2937 !important; }
+.dark .hover\:bg-gray-100:hover { background-color: #374151 !important; }
+
+/* 2. Text Colors (Ensures perfect visibility on black) */
+.dark .text-gray-900 { color: #f9fafb !important; }
+.dark .text-gray-800 { color: #f3f4f6 !important; }
+.dark .text-gray-700 { color: #e5e7eb !important; }
+.dark .text-gray-600 { color: #d1d5db !important; }
+.dark .text-gray-500 { color: #9ca3af !important; }
+
+/* 3. Borders & Dividers */
+.dark .border-gray-100 { border-color: #1f2937 !important; }
+.dark .border-gray-200 { border-color: #374151 !important; }
+.dark .border-gray-300 { border-color: #4b5563 !important; }
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) { border-color: #1f2937 !important; }
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) { border-color: #374151 !important; }
+
+/* 4. Form Inputs, Selects, and Textareas */
+.dark input, 
+.dark select, 
+.dark textarea {
+  background-color: #1f2937 !important;
+  color: #f9fafb !important;
+  border-color: #4b5563 !important;
+}
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+/* 5. Colored Badges & Status Backgrounds 
+   (Softens bright pastel backgrounds into dark, translucent overlays) */
+.dark .bg-blue-50 { background-color: rgba(30, 58, 138, 0.3) !important; }
+.dark .bg-green-50 { background-color: rgba(6, 78, 59, 0.3) !important; }
+.dark .bg-red-50 { background-color: rgba(127, 29, 29, 0.3) !important; }
+.dark .bg-yellow-50 { background-color: rgba(113, 63, 18, 0.3) !important; }
+.dark .bg-orange-50 { background-color: rgba(124, 45, 18, 0.3) !important; }
+.dark .bg-purple-50 { background-color: rgba(88, 28, 135, 0.3) !important; }
+.dark .bg-teal-50 { background-color: rgba(19, 78, 74, 0.3) !important; }
+.dark .bg-indigo-50 { background-color: rgba(49, 46, 129, 0.3) !important; }
+
+/* 6. Colored Status Text (Brightens text so it doesn't get lost in the dark) */
+.dark .text-blue-700, .dark .text-blue-600 { color: #60a5fa !important; }
+.dark .text-green-700, .dark .text-green-600 { color: #34d399 !important; }
+.dark .text-red-700, .dark .text-red-600 { color: #f87171 !important; }
+.dark .text-yellow-800 { color: #fde047 !important; }
+.dark .text-orange-800, .dark .text-orange-600 { color: #fb923c !important; }
+.dark .text-purple-700 { color: #c084fc !important; }
+.dark .text-teal-800 { color: #2dd4bf !important; }
+.dark .text-indigo-800, .dark .text-indigo-700 { color: #818cf8 !important; }
