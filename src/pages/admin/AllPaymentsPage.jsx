@@ -7,12 +7,12 @@ function AllPaymentsPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
   const { data, isLoading } = usePayments(params)
 
-  const records = data?.data?.content ?? []
-  const totalPages = data?.data?.totalPages ?? 0
-  const totalElements = data?.data?.totalElements ?? 0
+  const records = data?.data?.content ?? data?.content ?? []
+  const totalPages = data?.data?.totalPages ?? data?.totalPages ?? 0
+  const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
 
   const columns = [
-    { key: 'id', header: 'Payment ID', sortable: true },
+    { key: 'paymentId', header: 'Payment ID', sortable: true },
     {
       key: 'policyNumber',
       header: 'Policy',
