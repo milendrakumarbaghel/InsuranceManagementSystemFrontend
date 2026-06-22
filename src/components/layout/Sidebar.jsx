@@ -203,7 +203,7 @@ function Sidebar({ role, isOpen, onClose }) {
       {/* Primary Slide Panel Sidebar Menu Wrapper */}
       <aside
         className={[
-          'fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-20',
+          'fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-20 dark:bg-gray-900 dark:border-gray-800',
           'flex flex-col overflow-y-auto',
           'transition-transform duration-200 ease-in-out',
           // Obeys isOpen boolean to collapse off-screen across all monitors
@@ -221,8 +221,8 @@ function Sidebar({ role, isOpen, onClose }) {
                 [
                   'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-blue-50 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900',
+                    ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-200'
+                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white',
                 ].join(' ')
               }
             >

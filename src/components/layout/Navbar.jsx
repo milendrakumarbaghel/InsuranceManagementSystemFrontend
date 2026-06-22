@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext.jsx'
+import { useTheme } from '../../context/ThemeContext.jsx'
 
 function roleBadgeClass(role) {
   const map = {
@@ -12,6 +13,7 @@ function roleBadgeClass(role) {
 
 function Navbar({ onMenuToggle }) {
   const { user, logout } = useAuth()
+  const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
   function handleLogout() {
@@ -20,13 +22,13 @@ function Navbar({ onMenuToggle }) {
   }
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-3 shadow-sm z-30 fixed top-0 left-0 right-0">
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-3 shadow-sm z-30 fixed top-0 left-0 right-0 transition-colors dark:bg-gray-900 dark:border-gray-800">
       {/* Unified Sidebar Hamburger Menu Toggle Button */}
       <button
         type="button"
         onClick={onMenuToggle}
         aria-label="Toggle navigation menu"
-        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -34,7 +36,7 @@ function Navbar({ onMenuToggle }) {
       </button>
 
       {/* App branding title logo */}
-      <span className="text-lg font-bold text-blue-700 tracking-tight select-none ml-2">
+      <span className="text-lg font-bold text-blue-700 tracking-tight select-none ml-2 dark:text-blue-300">
         InsureMS
       </span>
 
@@ -44,8 +46,26 @@ function Navbar({ onMenuToggle }) {
       {/* Authenticated user session account configuration actions */}
       {user && (
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-300 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:hover:text-white"
+          >
+            {isDark ? (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.36-6.36-1.42 1.42M7.05 16.95l-1.41 1.41m12.72 0-1.42-1.41M7.05 7.05 5.64 5.64M12 8a4 4 0 100 8 4 4 0 000-8z" />
+              </svg>
+            ) : (
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+              </svg>
+            )}
+          </button>
+
           <div className="hidden sm:flex flex-col items-end leading-tight">
-            <span className="text-sm font-medium text-gray-800">{user.username}</span>
+            <span className="text-sm font-medium text-gray-800 dark:text-gray-100">{user.username}</span>
             <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${roleBadgeClass(user.role)}`}>
               {user.role}
             </span>
@@ -54,7 +74,7 @@ function Navbar({ onMenuToggle }) {
           <button
             type="button"
             onClick={handleLogout}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 rounded-lg border border-gray-300 hover:bg-red-50 hover:text-red-600 hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 rounded-lg border border-gray-300 hover:bg-red-50 hover:text-red-600 hover:border-red-300 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors dark:border-gray-700 dark:text-gray-200 dark:hover:border-red-500 dark:hover:bg-red-950 dark:hover:text-red-300"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
