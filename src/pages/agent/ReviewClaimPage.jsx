@@ -30,7 +30,7 @@ function ReviewClaimPage() {
   function onSubmit(formData) {
     reviewClaim.mutate({
       id,
-      data: { recommended: formData.recommended === 'true', remarks: formData.remarks },
+      data: { recommended: formData.recommended, remarks: formData.remarks },
     }, {
       onSuccess: () => { showToast('Claim reviewed successfully.', 'success'); navigate('/agent/claims') },
       onError: (err) => handleApiError(err, showToast),

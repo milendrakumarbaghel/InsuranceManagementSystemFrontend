@@ -73,7 +73,11 @@ export const raiseClaimSchema = z.object({
 })
 
 export const reviewClaimSchema = z.object({
-  recommended: z.boolean({ invalid_type_error: 'Select a recommendation' }),
+  recommended: z.preprocess((value) => {
+    if (value === 'true') return true
+    if (value === 'false') return false
+    return value
+  }, z.boolean({ invalid_type_error: 'Select a recommendation' })),
   remarks: z.string().min(5, 'Remarks must be at least 5 characters'),
 })
 
