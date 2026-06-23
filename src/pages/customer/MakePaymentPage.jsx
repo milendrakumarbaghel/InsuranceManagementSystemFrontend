@@ -71,7 +71,7 @@ function getPaymentsContent(data) {
 }
 
 function getPaymentDate(payment) {
-  return payment.paymentDate ?? payment.createdAt ?? payment.paidAt ?? payment.transactionDate
+  return payment.paymentDate
 }
 
 function isSuccessfulPayment(payment) {
@@ -86,9 +86,7 @@ function hasAnnualPaymentThisYear(payments) {
 
     const paymentDate = getPaymentDate(payment)
 
-    if (!paymentDate) {
-      return true
-    }
+    if (!paymentDate) return false
 
     const parsedDate = new Date(paymentDate)
     return !Number.isNaN(parsedDate.getTime()) && parsedDate.getFullYear() === currentYear
