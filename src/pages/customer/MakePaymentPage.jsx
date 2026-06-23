@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { paymentSchema } from '../../utils/validators.js'
 import { usePolicy } from '../../hooks/usePolicies.js'
 import { usePlans } from '../../hooks/usePlans.js'
-import { useRecordPayment } from '../../hooks/usePayments.js'
+import { usePaymentsByPolicy, useRecordPayment } from '../../hooks/usePayments.js'
 import { useToast } from '../../context/ToastContext.jsx'
 import { handleApiError } from '../../utils/handleApiError.js'
 import FormInput from '../../components/common/FormInput.jsx'
@@ -62,16 +62,51 @@ function getPolicyPlanId(policy, plan) {
   return policy.policyPlanId ?? policy.PolicyPlanId ?? policy.planId ?? policy.plan?.id ?? getPlanId(plan)
 }
 
+function getPremiumType(policy, plan) {
+  return policy?.premiumType ?? policy?.policyPlan?.premiumType ?? policy?.plan?.premiumType ?? plan?.premiumType
+}
+
+function getPaymentsContent(data) {
+  return data?.data ?? data ?? []
+}
+
+function getPaymentDate(payment) {
+  return payment.paymentDate ?? payment.createdAt ?? payment.paidAt ?? payment.transactionDate
+}
+
+function isSuccessfulPayment(payment) {
+  return !payment.status || payment.status === 'SUCCESS'
+}
+
+function hasAnnualPaymentThisYear(payments) {
+  const currentYear = new Date().getFullYear()
+
+  return payments.some((payment) => {
+    if (!isSuccessfulPayment(payment)) return false
+
+    const paymentDate = getPaymentDate(payment)
+
+    if (!paymentDate) {
+      return true
+    }
+
+    const parsedDate = new Date(paymentDate)
+    return !Number.isNaN(parsedDate.getTime()) && parsedDate.getFullYear() === currentYear
+  })
+}
+
 function MakePaymentPage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const { showToast } = useToast()
   const { data: policyData, isLoading } = usePolicy(id)
   const { data: plansData, isLoading: plansLoading } = usePlans(PLAN_LOOKUP_PARAMS)
+  const { data: paymentsData, isLoading: paymentsLoading } = usePaymentsByPolicy(id)
   const recordPayment = useRecordPayment()
 
   const policy = policyData?.data ?? policyData
   const plans = getPlansContent(plansData)
+  const payments = getPaymentsContent(paymentsData)
   const policyPlan = findPolicyPlan(policy, plans)
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
@@ -84,12 +119,20 @@ function MakePaymentPage() {
     } : undefined,
   })
 
-  if (isLoading || plansLoading) return <div className="flex justify-center py-20"><Spinner /></div>
+  if (isLoading || plansLoading || paymentsLoading) return <div className="flex justify-center py-20"><Spinner /></div>
   if (!policy) return <div className="p-6 text-center text-gray-500">Policy not found.</div>
 
   const hasPaymentDetails = getPolicyPlanId(policy, policyPlan) > 0 && getPayableAmount(policy, policyPlan) > 0
+  const isAnnualPremium = getPremiumType(policy, policyPlan) === 'ANNUAL'
+  const isAnnualPaymentBlocked = isAnnualPremium && hasAnnualPaymentThisYear(payments)
+  const blockMessage = 'You have already paid this annual premium for the current year. Your next installment is scheduled for next year.'
 
   function onSubmit(data) {
+    if (isAnnualPaymentBlocked) {
+      showToast(blockMessage, 'warning')
+      return
+    }
+
     recordPayment.mutate({
       policyPlanId: Number(data.policyPlanId),
       policyNumber: data.policyNumber,
@@ -116,13 +159,18 @@ function MakePaymentPage() {
             Payment details are missing for this policy. Please try again after refreshing the page.
           </div>
         )}
+        {isAnnualPaymentBlocked && (
+          <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800">
+            {blockMessage}
+          </div>
+        )}
         <FormInput label="Policy Number" name="policyNumber" readOnly error={errors.policyNumber?.message} {...register('policyNumber')} />
-        <FormInput label="Amount (₹)" name="amount" type="number" step="0.01" required error={errors.amount?.message} {...register('amount', { valueAsNumber: true })} />
-        <FormSelect label="Payment Mode" name="paymentMode" required options={PAYMENT_MODE_OPTIONS} error={errors.paymentMode?.message} {...register('paymentMode')} />
+        <FormInput label="Amount (₹)" name="amount" type="number" step="0.01" readOnly required error={errors.amount?.message} {...register('amount', { valueAsNumber: true })} />
+        <FormSelect label="Payment Mode" name="paymentMode" required disabled={isAnnualPaymentBlocked} options={PAYMENT_MODE_OPTIONS} error={errors.paymentMode?.message} {...register('paymentMode')} />
         <input type="hidden" {...register('policyPlanId', { valueAsNumber: true })} />
         <div className="flex justify-end gap-3">
           <button type="button" onClick={() => navigate(-1)} className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
-          <button type="submit" disabled={isBusy || !hasPaymentDetails} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50">
+          <button type="submit" disabled={isBusy || !hasPaymentDetails || isAnnualPaymentBlocked} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50">
             {isBusy ? 'Processing…' : 'Pay Now'}
           </button>
         </div>
