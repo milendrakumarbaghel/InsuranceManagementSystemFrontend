@@ -8,7 +8,6 @@ import StatusBadge from '../../components/common/StatusBadge.jsx'
 import Spinner from '../../components/common/Spinner.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
 
-
 function DetailItem({ label, value }) {
   return (
     <div>
@@ -57,9 +56,9 @@ function CustomerDetailPage() {
 
   const customer = customerData?.data ?? customerData
 
-  const policies = policiesData?.data?.content ?? []
-  const totalPages = policiesData?.data?.totalPages ?? 0
-  const totalElements = policiesData?.data?.totalElements ?? 0
+  const policies = policiesData?.data?.content ?? policiesData?.content ?? []
+  const totalPages = policiesData?.data?.totalPages ?? policiesData?.totalPages ?? 0
+  const totalElements = policiesData?.data?.totalElements ?? policiesData?.totalElements ?? 0
 
   if (customerLoading) {
     return (
@@ -75,15 +74,21 @@ function CustomerDetailPage() {
     )
   }
 
-  const fullName = [customer.firstName, customer.lastName].filter(Boolean).join(' ') || '—'
+  const fullName = customer.fullName || '—'
+  
+  // Combine Address, City, State, and Pin Code cleanly
+  const fullAddress = [customer.address, customer.city, customer.state, customer.pinCode]
+    .filter(Boolean)
+    .join(', ')
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-6">
       <BackButton />
+      
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{fullName}</h1>
-        <p className="text-gray-500 mt-1">Customer ID: {customer.id}</p>
+        <p className="text-gray-500 mt-1">Customer ID: {customer.customerId}</p>
       </div>
 
       {/* Profile Card */}
@@ -91,14 +96,16 @@ function CustomerDetailPage() {
         <h2 className="text-base font-semibold text-gray-900 border-b border-gray-100 pb-3">
           Profile Details
         </h2>
+        
+        {/* UPDATED: Mapped to match your new CustomerResponseDto fields */}
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-          <DetailItem label="Username" value={customer.username} />
+          <DetailItem label="Full Name" value={customer.fullName} />
           <DetailItem label="Email" value={customer.email} />
-          <DetailItem label="First Name" value={customer.firstName} />
-          <DetailItem label="Last Name" value={customer.lastName} />
-          <DetailItem label="Phone" value={customer.phone} />
+          <DetailItem label="Mobile Number" value={customer.mobileNumber} />
           <DetailItem label="Date of Birth" value={formatDate(customer.dateOfBirth)} />
-          <DetailItem label="Address" value={customer.address} />
+          <DetailItem label="Address" value={fullAddress || '—'} />
+          <DetailItem label="Nominee Name" value={customer.nomineeName} />
+          <DetailItem label="Nominee Relation" value={customer.nomineeRelation} />
         </dl>
       </div>
 

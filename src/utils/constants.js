@@ -39,4 +39,4 @@ export const MAX_PAGE_SIZE = 100
 
 export const DEFAULT_SORT = 'createdAt'
 
-export const DEFAULT_SORT_DIR = 'DESC'
+export const DEFAULT_SORT_DIR = 'ASC'

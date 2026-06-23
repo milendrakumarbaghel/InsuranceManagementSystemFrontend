@@ -17,7 +17,6 @@ function CustomerProfile() {
   const [editing, setEditing] = useState(false)
 
   const profile = data?.data ?? data ?? null
-  console.log('profile', profile)
   const hasProfile = !!profile?.customerId
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
@@ -68,18 +67,24 @@ function CustomerProfile() {
         )}
       </div>
 
+      {/* DISPLAY ALL PROFILE DATA HERE */}
       {hasProfile && !editing && (
         <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
             {[
               ['Full Name', profile.fullName],
+              ['Email', profile.email],
+              ['Mobile Number', profile.mobileNumber],
+              ['Date of Birth', profile.dateOfBirth],
+              ['Address', profile.address],
               ['City', profile.city],
               ['State', profile.state],
-              ['Nominee', profile.nomineeName],
-              ['Date of Birth', profile.dateOfBirth],
+              ['Pin Code', profile.pinCode],
+              ['Nominee Name', profile.nomineeName],
+              ['Nominee Relation', profile.nomineeRelation],
             ].map(([label, value]) => (
               <div key={label}>
-                <dt className="text-xs font-medium text-gray-500 uppercase">{label}</dt>
+                <dt className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</dt>
                 <dd className="mt-1 text-sm text-gray-900">{value ?? '—'}</dd>
               </div>
             ))}
