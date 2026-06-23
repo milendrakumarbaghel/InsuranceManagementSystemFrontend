@@ -26,6 +26,7 @@ html.dark {
 .dark .bg-gray-100 { background-color: #1f2937 !important; }
 .dark .hover\:bg-gray-50:hover { background-color: #1f2937 !important; }
 .dark .hover\:bg-gray-100:hover { background-color: #374151 !important; }
+.dark .hover\:bg-blue-50:hover { background-color: rgba(30, 58, 138, 0.4) !important; }
 
 /* 2. Text Colors (Ensures perfect visibility on black) */
 .dark .text-gray-900 { color: #f9fafb !important; }
