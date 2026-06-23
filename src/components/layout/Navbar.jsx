@@ -16,8 +16,8 @@ function Navbar({ onMenuToggle }) {
   const { isDark, toggleTheme } = useTheme()
   const navigate = useNavigate()
 
-  function handleLogout() {
-    logout()
+  async function handleLogout() {
+    await logout()
     navigate('/login', { replace: true })
   }
 

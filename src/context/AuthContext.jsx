@@ -1,47 +1,48 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
+import * as authApi from '../api/authApi.js'
+import {
+  AUTH_CLEARED_EVENT,
+  clearAuthStorage,
+  readStoredAuthUser,
+  storeAuthSession,
+} from '../utils/authStorage.js'
 
 const AuthContext = createContext(null)
-
-function normalizeAuthUser(authUser) {
-  return {
-    ...authUser,
-    role: (authUser?.role ?? '').replace(/^ROLE_/, ''),
-  }
-}
-
-function readStoredAuthUser() {
-  try {
-    const token = localStorage.getItem('token')
-    const userRaw = localStorage.getItem('user')
-
-    if (token && userRaw) {
-      const normalized = normalizeAuthUser(JSON.parse(userRaw))
-      localStorage.setItem('user', JSON.stringify(normalized))
-      return normalized
-    }
-  } catch {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
-
-  return null
-}
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readStoredAuthUser())
   const isAuthenticated = !!user
   const isLoading = false
 
+  useEffect(() => {
+    const handleAuthCleared = () => setUser(null)
+    const handleStorage = (event) => {
+      if (['accessToken', 'refreshToken', 'token', 'user'].includes(event.key)) {
+        setUser(readStoredAuthUser())
+      }
+    }
+
+    window.addEventListener(AUTH_CLEARED_EVENT, handleAuthCleared)
+    window.addEventListener('storage', handleStorage)
+
+    return () => {
+      window.removeEventListener(AUTH_CLEARED_EVENT, handleAuthCleared)
+      window.removeEventListener('storage', handleStorage)
+    }
+  }, [])
+
   const login = (authUser) => {
-    const normalised = normalizeAuthUser(authUser)
-    localStorage.setItem('token', normalised.token)
-    localStorage.setItem('user', JSON.stringify(normalised))
+    const normalised = storeAuthSession(authUser)
     setUser(normalised)
   }
 
-  const logout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
+  const logout = async () => {
+    try {
+      await authApi.logout()
+    } finally {
+      clearAuthStorage({ notify: false })
+    }
+
     setUser(null)
   }
 
