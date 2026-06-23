@@ -9,6 +9,7 @@ import RegisterPage from '../pages/auth/RegisterPage.jsx'
 import OtpVerificationPage from '../pages/auth/OtpVerificationPage.jsx'
 
 // Shared pages
+import LandingPage from '../pages/LandingPage.jsx'
 import UnauthorizedPage from '../pages/shared/UnauthorizedPage.jsx'
 import NotFoundPage from '../pages/shared/NotFoundPage.jsx'
 
@@ -60,7 +61,8 @@ function RoleRedirect() {
 function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<RoleRedirect />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/home" element={<RoleRedirect />} />
 
       {/* Public */}
       <Route path="/login" element={<LoginPage />} />

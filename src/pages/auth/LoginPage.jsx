@@ -70,7 +70,7 @@ return (
     <div className="grid min-h-screen lg:grid-cols-2">
 
       {/* Left Side */}
-      <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-700 via-indigo-700 to-violet-800 p-12 text-white">
+      <div className="hidden lg:flex flex-col justify-between bg-linear-to-br from-blue-700 via-indigo-700 to-violet-800 p-12 text-white">
         <div>
           <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 backdrop-blur">
             🛡️
@@ -208,7 +208,7 @@ return (
                 className="
                   w-full
                   rounded-2xl
-                  bg-gradient-to-r
+                  bg-linear-to-r
                   from-blue-600
                   to-indigo-600
                   py-3

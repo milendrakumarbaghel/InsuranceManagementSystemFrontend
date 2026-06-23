@@ -36,7 +36,7 @@ return (
   <div className="min-h-screen bg-slate-100">
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Left Panel */}
-      <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-blue-700 via-indigo-700 to-violet-800 p-12 text-white">
+      <div className="hidden lg:flex flex-col justify-between bg-linear-to-br from-blue-700 via-indigo-700 to-violet-800 p-12 text-white">
         <div>
           <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-white/20 text-3xl backdrop-blur">
             🛡️
@@ -221,7 +221,7 @@ return (
                 disabled={isSubmitting}
                 className="
                   w-full rounded-2xl
-                  bg-gradient-to-r
+                  bg-linear-to-r
                   from-blue-600
                   to-indigo-600
                   py-3.5
