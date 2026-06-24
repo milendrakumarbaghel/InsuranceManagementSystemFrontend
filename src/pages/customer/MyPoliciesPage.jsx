@@ -25,7 +25,7 @@ function MyPoliciesPage() {
           <table className="min-w-full divide-y divide-gray-200 text-sm">
             <thead className="bg-gray-50">
               <tr>
-                {['Policy Number', 'Plan', 'Status', 'Start Date', 'End Date', 'Actions'].map((h) => (
+                {['Policy Number', 'Type', 'Plan', 'Status', 'Start Date', 'End Date', 'Actions'].map((h) => (
                   <th key={h} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">{h}</th>
                 ))}
               </tr>
@@ -34,6 +34,7 @@ function MyPoliciesPage() {
               {policies.map((p) => (
                 <tr key={p.policyId} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">{p.policyNumber}</td>
+                  <td className="px-4 py-3">{p.productType ?? '—'}</td>
                   <td className="px-4 py-3">{p.planName ?? '—'}</td>
                   <td className="px-4 py-3"><StatusBadge status={p.status} /></td>
                   <td className="px-4 py-3">{formatDate(p.startDate)}</td>

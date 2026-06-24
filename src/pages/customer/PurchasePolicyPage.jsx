@@ -25,7 +25,9 @@ function PurchasePolicyPage() {
         showToast('Policy purchased successfully!', 'success')
         navigate('/customer/policies')
       },
-      onError: (err) => handleApiError(err, showToast),
+      onError: (err) => {
+         handleApiError(err, showToast)
+      }
     })
   }
 
