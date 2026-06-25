@@ -6,6 +6,7 @@ import { loginSchema } from '../../utils/validators.js'
 import { useAuth } from '../../context/AuthContext.jsx'
 import { useToast } from '../../context/ToastContext.jsx'
 import * as authApi from '../../api/authApi.js'
+import * as otpApi from '../../api/otpApi.js'
 
 const ROLE_DASHBOARDS = {
   CUSTOMER: '/customer/dashboard',
@@ -56,10 +57,31 @@ function LoginPage() {
       const role = normalizeRole(authUser.role)
       navigate(getPostLoginPath(role, from), { replace: true })
     } catch (error) {
-      showToast(
-        error.response?.data?.message ?? 'Login failed. Please check your credentials.',
-        'error'
-      )
+      const errorData = error.response?.data
+      const emailVerified = errorData?.emailVerified
+      const mobileVerified = errorData?.mobileVerified
+
+      // Inactive user whose email/phone is not yet verified → redirect to OTP verification
+      if (
+        emailVerified === false ||
+        mobileVerified === false
+      ) {
+        try {
+          await otpApi.resendOtp({ email: data.email })
+        } catch {
+          // Swallow resend errors – user can resend manually from verification page
+        }
+        showToast(
+          'Your email or phone is not verified. Please verify to activate your account.',
+          'info'
+        )
+        navigate('/verify-otp', { state: { email: data.email, fromLogin: true } })
+      } else {
+        showToast(
+          errorData?.message ?? 'Login failed. Please check your credentials.',
+          'error'
+        )
+      }
     } finally {
       setIsSubmitting(false)
     }

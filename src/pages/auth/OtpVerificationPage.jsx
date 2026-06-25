@@ -9,6 +9,8 @@ function OtpVerificationPage() {
   const { showToast } = useToast()
   const email = location.state?.email ?? ''
 
+  const fromLogin = location.state?.fromLogin ?? false
+
   const [emailOtp, setEmailOtp] = useState('')
   const [phoneOtp, setPhoneOtp] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -19,7 +21,12 @@ function OtpVerificationPage() {
     setIsSubmitting(true)
     try {
       await otpApi.verifyOtp({ email, emailOtp, phoneOtp })
-      showToast('Account verified! Please sign in.', 'success')
+      showToast(
+        fromLogin
+          ? 'Account verified and activated! Please sign in.'
+          : 'Account verified! Please sign in.',
+        'success'
+      )
       navigate('/login')
     } catch (error) {
       showToast(error.response?.data?.message ?? 'OTP verification failed.', 'error')
