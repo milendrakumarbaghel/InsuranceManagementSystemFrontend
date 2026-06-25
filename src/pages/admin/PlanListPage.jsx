@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-// Import useActivatePlan
 import { usePlans, useTogglePlan, useActivatePlan } from '../../hooks/usePlans.js'
 import { usePagination } from '../../hooks/usePagination.js'
 import { useToast } from '../../context/ToastContext.jsx'
@@ -43,7 +42,7 @@ function PlanListPage() {
     { key: 'coverageAmount', header: 'Coverage', render: (row) => formatCurrency(row.coverageAmount) },
     { key: 'premiumAmount', header: 'Premium', render: (row) => formatCurrency(row.premiumAmount) },
     { key: 'premiumType', header: 'Type' },
-    { key: 'duration', header: 'Duration', render: (row) => `${row.duration} mo` },
+    { key: 'duration', header: 'Duration', render: (row) => `${row.duration} ` },
     { key: 'active', header: 'Status', render: (row) => <StatusBadge status={row.active ? 'ACTIVE' : 'INACTIVE'} /> },
     {
       key: 'actions',
@@ -52,7 +51,7 @@ function PlanListPage() {
         <div className="flex gap-2">
           <Link to={`/admin/plans/${row.PolicyPlanId ?? row.policyPlanId}/edit`} onClick={(e) => e.stopPropagation()} className="rounded-md bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100">Edit</Link>
           
-          {/* Conditionally render Activate or Deactivate based on plan status */}
+          
           {row.active ? (
             <button onClick={(e) => { e.stopPropagation(); handleDeactivate(row) }} disabled={togglePlan.isPending} className="rounded-md bg-red-50 px-3 py-1 text-xs font-medium text-red-700 hover:bg-red-100 disabled:opacity-50">
               Deactivate
