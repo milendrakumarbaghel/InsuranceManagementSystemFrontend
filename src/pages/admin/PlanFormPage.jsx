@@ -15,7 +15,9 @@ import BackButton from '../../components/common/BackButton.jsx'
 
 const PREMIUM_OPTIONS = [
   { value: '', label: '— Select type —' },
-  { value: 'ONE_TIME', label: 'One Time' },
+  { value: 'MONTHLY', label: 'Monthly' },
+  { value: 'QUARTERLY', label: 'Quarterly' },
+  { value: 'HALF_YEARLY', label: 'Half Yearly' },
   { value: 'ANNUAL', label: 'Annual' },
 ]
 

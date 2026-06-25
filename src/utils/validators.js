@@ -35,8 +35,8 @@ export const planSchema = z.object({
   planName: z.string().min(3, 'Plan name must be at least 3 characters').max(100),
   coverageAmount: z.number({ invalid_type_error: 'Coverage amount is required' }).positive('Coverage amount must be > 0'),
   premiumAmount: z.number({ invalid_type_error: 'Premium amount is required' }).positive('Premium amount must be > 0'),
-  premiumType: z.enum(['ONE_TIME', 'ANNUAL'], {
-    errorMap: () => ({ message: 'Select a valid premium type' }),
+  premiumType: z.enum(['MONTHLY', 'QUARTERLY', 'HALF_YEARLY', 'ANNUAL'], {
+    errorMap: () => ({ message: 'Select a valid premium type (MONTHLY, QUARTERLY, HALF_YEARLY, ANNUAL)' }),
   }),
   duration: z.number({ invalid_type_error: 'Duration is required' }).int().min(1, 'Duration must be at least 1'),
   termsAndConditions: z.string().min(10, 'Terms must be at least 10 characters').max(2000),

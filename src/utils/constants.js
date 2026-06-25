@@ -29,7 +29,9 @@ export const PRODUCT_TYPES = {
 }
 
 export const PREMIUM_TYPES = {
-  ONE_TIME: 'ONE_TIME',
+  MONTHLY: 'MONTHLY',
+  QUARTERLY: 'QUARTERLY',
+  HALF_YEARLY: 'HALF_YEARLY',
   ANNUAL: 'ANNUAL',
 }
 

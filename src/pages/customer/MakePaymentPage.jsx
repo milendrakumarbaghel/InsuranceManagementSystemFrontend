@@ -78,19 +78,44 @@ function isSuccessfulPayment(payment) {
   return !payment.status || payment.status === 'SUCCESS'
 }
 
-function hasAnnualPaymentThisYear(payments) {
-  const currentYear = new Date().getFullYear()
+function hasPaymentInCurrentPeriod(payments, premiumType) {
+  const now = new Date()
 
   return payments.some((payment) => {
     if (!isSuccessfulPayment(payment)) return false
 
     const paymentDate = getPaymentDate(payment)
-
     if (!paymentDate) return false
 
-    const parsedDate = new Date(paymentDate)
-    return !Number.isNaN(parsedDate.getTime()) && parsedDate.getFullYear() === currentYear
+    const parsed = new Date(paymentDate)
+    if (Number.isNaN(parsed.getTime())) return false
+
+    switch (premiumType) {
+      case 'MONTHLY':
+        return parsed.getFullYear() === now.getFullYear() && parsed.getMonth() === now.getMonth()
+      case 'QUARTERLY': {
+        const currentQ = Math.floor(now.getMonth() / 3)
+        const paymentQ = Math.floor(parsed.getMonth() / 3)
+        return parsed.getFullYear() === now.getFullYear() && paymentQ === currentQ
+      }
+      case 'HALF_YEARLY': {
+        const currentH = now.getMonth() < 6 ? 0 : 1
+        const paymentH = parsed.getMonth() < 6 ? 0 : 1
+        return parsed.getFullYear() === now.getFullYear() && paymentH === currentH
+      }
+      case 'ANNUAL':
+        return parsed.getFullYear() === now.getFullYear()
+      default:
+        return false
+    }
   })
+}
+
+const PERIOD_LABELS = {
+  MONTHLY: 'month',
+  QUARTERLY: 'quarter',
+  HALF_YEARLY: 'half-year',
+  ANNUAL: 'year',
 }
 
 function MakePaymentPage() {
@@ -121,12 +146,13 @@ function MakePaymentPage() {
   if (!policy) return <div className="p-6 text-center text-gray-500">Policy not found.</div>
 
   const hasPaymentDetails = getPolicyPlanId(policy, policyPlan) > 0 && getPayableAmount(policy, policyPlan) > 0
-  const isAnnualPremium = getPremiumType(policy, policyPlan) === 'ANNUAL'
-  const isAnnualPaymentBlocked = isAnnualPremium && hasAnnualPaymentThisYear(payments)
-  const blockMessage = 'You have already paid this annual premium for the current year. Your next installment is scheduled for next year.'
+  const premiumType = getPremiumType(policy, policyPlan)
+  const isPeriodPaymentBlocked = premiumType && hasPaymentInCurrentPeriod(payments, premiumType)
+  const periodLabel = PERIOD_LABELS[premiumType] ?? 'period'
+  const blockMessage = `You have already paid this ${premiumType?.toLowerCase()?.replace('_', '-')} premium for the current ${periodLabel}. Your next installment is scheduled for next ${periodLabel}.`
 
   function onSubmit(data) {
-    if (isAnnualPaymentBlocked) {
+    if (isPeriodPaymentBlocked) {
       showToast(blockMessage, 'warning')
       return
     }
@@ -157,18 +183,18 @@ function MakePaymentPage() {
             Payment details are missing for this policy. Please try again after refreshing the page.
           </div>
         )}
-        {isAnnualPaymentBlocked && (
+        {isPeriodPaymentBlocked && (
           <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-800">
             {blockMessage}
           </div>
         )}
         <FormInput label="Policy Number" name="policyNumber" readOnly error={errors.policyNumber?.message} {...register('policyNumber')} />
         <FormInput label="Amount (₹)" name="amount" type="number" step="0.01" readOnly required error={errors.amount?.message} {...register('amount', { valueAsNumber: true })} />
-        <FormSelect label="Payment Mode" name="paymentMode" required disabled={isAnnualPaymentBlocked} options={PAYMENT_MODE_OPTIONS} error={errors.paymentMode?.message} {...register('paymentMode')} />
+        <FormSelect label="Payment Mode" name="paymentMode" required disabled={isPeriodPaymentBlocked} options={PAYMENT_MODE_OPTIONS} error={errors.paymentMode?.message} {...register('paymentMode')} />
         <input type="hidden" {...register('policyPlanId', { valueAsNumber: true })} />
         <div className="flex justify-end gap-3">
           <button type="button" onClick={() => navigate(-1)} className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
-          <button type="submit" disabled={isBusy || !hasPaymentDetails || isAnnualPaymentBlocked} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50">
+          <button type="submit" disabled={isBusy || !hasPaymentDetails || isPeriodPaymentBlocked} className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50">
             {isBusy ? 'Processing…' : 'Pay Now'}
           </button>
         </div>
