@@ -168,28 +168,29 @@ const ROLE_LINKS = {
   ADMIN: ADMIN_LINKS,
 }
 
-function Sidebar({ role, isOpen, onClose }) {
+function Sidebar({ role, isMobileOpen, onMobileClose }) {
   const links = ROLE_LINKS[role] ?? []
 
   return (
     <>
-      {/* Mobile background translucent blur overlay */}
-      {isOpen && (
+      {/* Mobile overlay backdrop */}
+      {isMobileOpen && (
         <div
           className="fixed inset-0 bg-black/30 z-20 lg:hidden"
           aria-hidden="true"
-          onClick={onClose}
+          onClick={onMobileClose}
         />
       )}
 
-      {/* Primary Slide Panel Sidebar Menu Wrapper */}
+      {/* Sidebar panel — always visible on lg+, drawer on mobile */}
       <aside
         className={[
           'fixed top-16 left-0 bottom-0 w-64 bg-white border-r border-gray-200 z-20 dark:bg-gray-900 dark:border-gray-800',
           'flex flex-col overflow-y-auto',
           'transition-transform duration-200 ease-in-out',
-          // Obeys isOpen boolean to collapse off-screen across all monitors
-          isOpen ? 'translate-x-0' : '-translate-x-full',
+          // On lg+: always visible. On mobile: slide based on isMobileOpen
+          'lg:translate-x-0',
+          isMobileOpen ? 'translate-x-0' : '-translate-x-full',
         ].join(' ')}
         aria-label="Main navigation"
       >
@@ -198,7 +199,7 @@ function Sidebar({ role, isOpen, onClose }) {
             <NavLink
               key={item.to}
               to={item.to}
-              onClick={onClose}
+              onClick={onMobileClose}
               className={({ isActive }) =>
                 [
                   'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',

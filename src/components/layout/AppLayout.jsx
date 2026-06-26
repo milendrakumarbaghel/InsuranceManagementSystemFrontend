@@ -7,37 +7,31 @@ import Sidebar from './Sidebar.jsx'
 function AppLayout() {
   const { user } = useAuth()
   
-  // Set to false initially so the sidebar is completely hidden by default
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  // Controls the mobile drawer only; desktop sidebar is always visible
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
-  function toggleSidebar() {
-    setSidebarOpen((prev) => !prev)
+  function toggleMobileSidebar() {
+    setMobileSidebarOpen((prev) => !prev)
   }
 
-  function closeSidebar() {
-    setSidebarOpen(false)
+  function closeMobileSidebar() {
+    setMobileSidebarOpen(false)
   }
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 transition-colors dark:bg-gray-950 dark:text-gray-100">
       {/* Top application navigation header */}
-      <Navbar onMenuToggle={toggleSidebar} />
+      <Navbar onMenuToggle={toggleMobileSidebar} />
 
-      {/* Role-aware navigation panel drawer */}
+      {/* Role-aware navigation panel */}
       <Sidebar
         role={user?.role}
-        isOpen={sidebarOpen}
-        onClose={closeSidebar}
+        isMobileOpen={mobileSidebarOpen}
+        onMobileClose={closeMobileSidebar}
       />
 
-      {/* Primary router contents canvas layout view */}
-      <main
-        className={[
-          'pt-16 min-h-screen transition-all duration-200 ease-in-out',
-          // Shuns left padding dynamically when sidebar state switches
-          sidebarOpen ? 'lg:ml-64' : 'lg:ml-0',
-        ].join(' ')}
-      >
+      {/* Primary content area — always offset on lg+ for the permanent sidebar */}
+      <main className="pt-16 min-h-screen transition-all duration-200 ease-in-out lg:ml-64">
         <div className="p-4 sm:p-6 lg:p-8">
           <Outlet />
         </div>

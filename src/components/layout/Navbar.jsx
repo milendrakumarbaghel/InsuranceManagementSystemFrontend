@@ -23,12 +23,12 @@ function Navbar({ onMenuToggle }) {
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center px-4 gap-3 shadow-sm z-30 fixed top-0 left-0 right-0 transition-colors dark:bg-gray-900 dark:border-gray-800">
-      {/* Unified Sidebar Hamburger Menu Toggle Button */}
+      {/* Mobile-only Sidebar Hamburger Menu Toggle Button */}
       <button
         type="button"
         onClick={onMenuToggle}
         aria-label="Toggle navigation menu"
-        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white lg:hidden"
       >
         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
