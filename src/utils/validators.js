@@ -5,6 +5,27 @@ export const loginSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('Enter a valid email'),
+})
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email('Enter a valid email'),
+  otp: z.string().regex(/^\d{6}$/, 'OTP must be a 6-digit number'),
+  newPassword: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(20)
+    .regex(
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$/,
+      'Must contain uppercase, lowercase, digit, and special character (@#$%^&+=!)'
+    ),
+  confirmPassword: z.string().min(1, 'Confirm password is required'),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: 'Passwords do not match',
+  path: ['confirmPassword'],
+})
+
 export const registerSchema = z.object({
   fullName: z.string().min(3, 'Full name must be at least 3 characters').max(100),
   email: z.string().email('Enter a valid email'),

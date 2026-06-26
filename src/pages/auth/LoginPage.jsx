@@ -216,12 +216,12 @@ return (
                   Remember me
                 </label>
 
-                <button
-                  type="button"
+                <Link
+                  to="/forgot-password"
                   className="font-medium text-blue-600 hover:text-blue-700"
                 >
                   Forgot Password?
-                </button>
+                </Link>
               </div>
 
               <button

@@ -7,6 +7,8 @@ import AppLayout from '../components/layout/AppLayout.jsx'
 import LoginPage from '../pages/auth/LoginPage.jsx'
 import RegisterPage from '../pages/auth/RegisterPage.jsx'
 import OtpVerificationPage from '../pages/auth/OtpVerificationPage.jsx'
+import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage.jsx'
+import ResetPasswordPage from '../pages/auth/ResetPasswordPage.jsx'
 
 // Shared pages
 import LandingPage from '../pages/LandingPage.jsx'
@@ -68,6 +70,8 @@ function AppRouter() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/verify-otp" element={<OtpVerificationPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
 
       {/* Customer */}

@@ -10,3 +10,9 @@ export const refreshToken = (refreshToken) =>
 
 export const logout = () =>
   axiosInstance.post('/auth/logout', { refreshToken: getRefreshToken() })
+
+export const forgotPassword = (payload) =>
+  axiosInstance.post('/auth/forgot-password', payload)
+
+export const resetPassword = (payload) =>
+  axiosInstance.post('/auth/reset-password', payload)

@@ -26,6 +26,8 @@ function isPublicAuthEndpoint(url = '') {
   return url.includes('/auth/login')
     || url.includes('/auth/register')
     || url.includes('/auth/refresh-token')
+    || url.includes('/auth/forgot-password')
+    || url.includes('/auth/reset-password')
 }
 
 function isBlacklistedTokenError(error) {
