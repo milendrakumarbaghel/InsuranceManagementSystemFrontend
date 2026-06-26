@@ -28,6 +28,8 @@ function isPublicAuthEndpoint(url = '') {
     || url.includes('/auth/refresh-token')
     || url.includes('/auth/forgot-password')
     || url.includes('/auth/reset-password')
+    || url.includes('/otp/verify')
+    || url.includes('/otp/resend')
 }
 
 function isBlacklistedTokenError(error) {
