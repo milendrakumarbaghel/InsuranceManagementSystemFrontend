@@ -27,6 +27,7 @@ import AdminPolicyListPage from '../pages/admin/AdminPolicyListPage.jsx'
 import AdminClaimListPage from '../pages/admin/AdminClaimListPage.jsx'
 import ClaimDecisionPage from '../pages/admin/ClaimDecisionPage.jsx'
 import AllPaymentsPage from '../pages/admin/AllPaymentsPage.jsx'
+import CustomersDetailPage from "../pages/admin/CustomerDetailPage";
 
 // Customer pages
 import CustomerDashboard from '../pages/customer/CustomerDashboard.jsx'
@@ -122,7 +123,8 @@ function AppRouter() {
           <Route path="/admin/claims" element={<AdminClaimListPage />} />
           <Route path="/admin/claims/:id/decide" element={<ClaimDecisionPage />} />
           <Route path="/admin/payments" element={<AllPaymentsPage />} />
-        </Route>
+          <Route path="/admin/customers/:id" element={<CustomersDetailPage />} />   
+         </Route>
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

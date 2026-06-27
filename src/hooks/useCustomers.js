@@ -37,3 +37,10 @@ export const useUpdateProfile = () => {
     onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.customers.me() }),
   })
 }
+
+export const useCustomerByUserId = (userId) =>
+  useQuery({
+    queryKey: ['customers', 'user', userId],
+    queryFn: () => customerApi.getCustomerByUserId(userId).then((r) => r.data),
+    enabled: !!userId,
+  })

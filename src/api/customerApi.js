@@ -14,3 +14,6 @@ export const createProfile = (data) =>
 
 export const updateMyProfile = (customerId, data) =>
   axiosInstance.put(`/customers/${customerId}`, data)
+
+export const getCustomerByUserId = (userId) =>
+  axiosInstance.get(`/customers/user/${userId}`)
