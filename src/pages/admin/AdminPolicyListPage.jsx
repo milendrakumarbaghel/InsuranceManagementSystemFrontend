@@ -28,7 +28,7 @@ function AdminPolicyListPage() {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">All Policies</h1>
       </div>
-      <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No policies found."
+      <DataTable columns={columns} data={records} isLoading={isLoading} exportTitle="Admin Policy Report" emptyMessage="No policies found."
         paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )

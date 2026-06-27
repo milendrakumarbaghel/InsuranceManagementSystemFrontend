@@ -60,3 +60,11 @@ export function formatStatus(status) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ')
 }
+
+export function getEnumOptions(enumObject) {
+  if (!enumObject) return []
+  return Object.values(enumObject).map((value) => ({
+    value: value,
+    label: formatStatus(value), // Reuses your existing formatter!
+  }))
+}

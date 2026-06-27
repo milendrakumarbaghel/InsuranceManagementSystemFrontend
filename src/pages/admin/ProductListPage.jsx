@@ -6,6 +6,7 @@ import { handleApiError } from '../../utils/handleApiError.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 function ProductListPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -50,7 +51,7 @@ function ProductListPage() {
         <div><h1 className="text-2xl font-bold text-gray-900">Products</h1></div>
         <Link to="/admin/products/new" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">+ New Product</Link>
       </div>
-      <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No products found."
+      <DataTable columns={columns} data={records} isLoading={isLoading} exportTitle="Admin Products List" emptyMessage="No products found."
         paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )

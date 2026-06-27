@@ -6,6 +6,7 @@ import { handleApiError } from '../../utils/handleApiError.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 function getUserId(row) {
   return row.id ?? row.userId ?? row.UserId
@@ -58,7 +59,7 @@ function UserListPage() {
         <h1 className="text-2xl font-bold text-gray-900">Users</h1>
         <Link to="/admin/users/create-agent" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">+ Create Agent</Link>
       </div>
-      <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No users found."
+      <DataTable columns={columns} data={records} isLoading={isLoading} exportTitle="Admin Users List" emptyMessage="No users found."
         paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )

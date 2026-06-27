@@ -5,6 +5,7 @@ import { formatDate } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 const STATUS_OPTIONS = ['', 'PENDING_PAYMENT', 'ACTIVE', 'EXPIRED', 'CANCELLED']
 
@@ -36,7 +37,7 @@ function AgentPolicyListPage() {
         </select>
       </div>
       <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No policies found."
-        paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
+        exportTitle="Agent Policies Report" paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { usePagination } from '../../hooks/usePagination.js'
 import { formatCurrency, formatDate } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 function AllPaymentsPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -45,6 +46,7 @@ function AllPaymentsPage() {
         data={records}
         isLoading={isLoading}
         emptyMessage="No payment records found."
+        exportTitle="Admin Payments Report"
         paginationProps={{
           currentPage: page,
           totalPages,

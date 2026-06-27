@@ -3,6 +3,7 @@ import { usePagination } from '../../hooks/usePagination.js'
 import { formatDate, formatCurrency } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 
 function MyPaymentsPage() {
@@ -36,6 +37,7 @@ function MyPaymentsPage() {
         data={records}
         isLoading={isLoading}
         emptyMessage="No premium payments recorded yet."
+        exportTitle="My Payments Report"
         paginationProps={{
           currentPage: page,
           totalPages,

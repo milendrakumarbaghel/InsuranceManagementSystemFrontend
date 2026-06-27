@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext.jsx'
 import DataTable from '../../components/common/DataTable.jsx'
 import SearchFilterBar from '../../components/common/SearchFilterBar.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 const FILTER_DEFS = [
   { key: 'search', label: 'Search', type: 'text' },
@@ -70,6 +71,7 @@ function CustomerListPage() {
         isLoading={isLoading}
         emptyMessage="No customers found. (Have any customers completed their profiles?)"
         onRowClick={(row) => navigate(`${basePath}/customers/${row.customerId}`)}
+        exportTitle="Agent Customers List"
         paginationProps={{
           currentPage: page,
           totalPages,

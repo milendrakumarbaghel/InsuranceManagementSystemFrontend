@@ -5,6 +5,7 @@ import { formatDate, formatCurrency } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 function AgentClaimQueuePage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -36,7 +37,7 @@ function AgentClaimQueuePage() {
       <BackButton />
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Claim Queue</h1>
       <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No submitted claims."
-        paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
+        exportTitle="Claim Queue Report" paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )
 }

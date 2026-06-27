@@ -7,6 +7,7 @@ import { formatCurrency } from '../../utils/formatters.js'
 import DataTable from '../../components/common/DataTable.jsx'
 import StatusBadge from '../../components/common/StatusBadge.jsx'
 import BackButton from '../../components/common/BackButton.jsx'
+import { exportToPDF } from '../../utils/exportUtils';
 
 function PlanListPage() {
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
@@ -73,7 +74,7 @@ function PlanListPage() {
         <h1 className="text-2xl font-bold text-gray-900">Plans</h1>
         <Link to="/admin/plans/new" className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">+ New Plan</Link>
       </div>
-      <DataTable columns={columns} data={records} isLoading={isLoading} emptyMessage="No plans found."
+      <DataTable columns={columns} data={records} isLoading={isLoading} exportTitle="Admin Plans List" emptyMessage="No plans found."
         paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
     </div>
   )

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Spinner from './Spinner'
 import EmptyState from './EmptyState'
 import Pagination from './Pagination'
+import { exportToPDF } from '../../utils/exportUtils'
 
 function DataTable({
   columns = [],
@@ -10,9 +11,11 @@ function DataTable({
   emptyMessage = 'No records found.',
   onRowClick,
   paginationProps,
+  exportTitle
 }) {
   const [sortKey, setSortKey] = useState(null)
   const [sortDir, setSortDir] = useState('asc') // 'asc' | 'desc'
+  const [isExporting, setIsExporting] = useState(false)
 
   function handleSort(col) {
     if (!col.sortable) return
@@ -23,6 +26,13 @@ function DataTable({
       setSortDir('asc')
     }
   }
+  const handleExport = () => {
+    setIsExporting(true);
+   setTimeout(() => {
+    exportToPDF(rows, columns, exportTitle);
+    setIsExporting(false);
+  }, 100);
+  };
 
   // Client-side sort when no external sort handler is provided
   const rows = [...data].sort((a, b) => {
@@ -56,6 +66,17 @@ function DataTable({
 
   return (
     <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+      {exportTitle && (
+        <div className="flex justify-end p-4 border-b border-gray-100">
+          <button 
+            onClick={handleExport}
+            disabled={isExporting || rows.length === 0}
+            className="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 disabled:opacity-50"
+          >
+            {isExporting ? 'Exporting...' : 'Export PDF'}
+          </button>
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
