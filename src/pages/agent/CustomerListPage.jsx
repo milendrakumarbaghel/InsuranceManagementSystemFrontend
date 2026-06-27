@@ -8,8 +8,13 @@ import BackButton from '../../components/common/BackButton.jsx'
 import { exportToPDF } from '../../utils/exportUtils';
 
 const FILTER_DEFS = [
-  { key: 'search', label: 'Search', type: 'text' },
-]
+  { 
+    key: 'search', 
+    label: 'Search by Name or Email', 
+    type: 'text',
+    placeholder: 'Enter name or email...' 
+  }
+];
 
 function CustomerListPage() {
   const navigate = useNavigate()
@@ -50,7 +55,7 @@ function CustomerListPage() {
       <div className="mb-4">
         <SearchFilterBar
           filters={FILTER_DEFS}
-          values={filterValues}
+          values={{ search: params.search ?? '' }}
           onChange={(key, value) => setFilter(key, value)}
           onReset={resetFilters}
           searchPlaceholder="Search by name or email"
