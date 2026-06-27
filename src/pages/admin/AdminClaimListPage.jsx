@@ -15,17 +15,25 @@ import { exportToPDF } from '../../utils/exportUtils';
 function AdminClaimListPage() {
   const navigate = useNavigate()
   const { params, page, pageSize, setPage, setPageSize } = usePagination()
-  
-  // 1. STATE: Hold the currently selected filter values (e.g., { status: 'APPROVED' })
   const [filters, setFilters] = useState({})
 
-  // 2. MERGE: Combine pagination params with the active filters for the API call
+  // Fetch data
   const queryParams = { ...params, ...filters }
   const { data, isLoading } = useClaims(queryParams)
 
   const records = data?.data?.content ?? data?.content ?? []
   const totalPages = data?.data?.totalPages ?? data?.totalPages ?? 0
   const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
+
+  const filteredClaims = records.filter((claim) => {
+    const matchesName = filters.customerName
+      ? claim.customerName?.toLowerCase().includes(filters.customerName.toLowerCase())
+      : true;
+    const matchesStatus = filters.status
+      ? claim.claimStatus === filters.status
+      : true;
+    return matchesName && matchesStatus;
+  });
 
   const columns = [
     { key: 'claimNumber', header: 'Claim Number' },
@@ -35,32 +43,20 @@ function AdminClaimListPage() {
     { key: 'claimStatus', header: 'Status', render: (row) => <StatusBadge status={row.claimStatus} /> },
   ]
 
-  // 3. CONFIG: Define what the filter bar should render using your enums
   const filterConfig = [
-    { key: 'search', label: 'Search Claim No', type: 'text' },
-    { 
-      key: 'status', 
-      label: 'Claim Status', 
-      type: 'select',
-      options: getEnumOptions(CLAIM_STATUSES) // Generates the dropdown automatically
-    }
+    { key: 'customerName', label: 'Customer Name', type: 'text' },
+    { key: 'status', label: 'Claim Status', type: 'select', options: getEnumOptions(CLAIM_STATUSES) }
   ]
 
-  // 4. HANDLERS: Update state when a user types or selects a dropdown option
   const handleFilterChange = (key, value) => {
     setFilters((prev) => {
-      // If the user selects "All" (empty value), remove it from the query params
-      if (!value) {
-        const newFilters = { ...prev }
-        delete newFilters[key]
-        return newFilters
-      }
-      return { ...prev, [key]: value }
-    })
-    setPage(0) // Crucial: Always reset to the first page when a new filter is applied
+      const newFilters = { ...prev, [key]: value };
+      if (!value) delete newFilters[key];
+      return newFilters;
+    });
+    setPage(0); 
   }
 
-  // 5. HANDLERS: Clear all filters when the reset button is clicked
   const handleFilterReset = () => {
     setFilters({})
     setPage(0)
@@ -71,23 +67,21 @@ function AdminClaimListPage() {
       <BackButton />
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">All Claims</h1>
-        <p className="text-gray-500 mt-1">Click a row to review or decide on a claim.</p>
       </div>
 
-      {/* 6. RENDER: Drop the component into your UI and pass the props */}
       <div className="mb-6">
         <SearchFilterBar
           filters={filterConfig}
-          values={filters}
+          values={filters} 
           onChange={handleFilterChange}
           onReset={handleFilterReset}
-          searchPlaceholder="Search by Claim No..."
+          searchPlaceholder="Search by Customer name"
         />
       </div>
 
       <DataTable 
         columns={columns} 
-        data={records} 
+        data={filteredClaims} 
         isLoading={isLoading} 
         emptyMessage="No claims found."
         onRowClick={(row) => navigate(`/admin/claims/${row.claimId}/decide`)}
