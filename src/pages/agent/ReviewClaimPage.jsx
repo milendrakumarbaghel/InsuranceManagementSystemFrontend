@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,19 +5,19 @@ import { reviewClaimSchema } from "../../utils/validators.js";
 import { useClaim, useReviewClaim } from "../../hooks/useClaims.js";
 import { useToast } from "../../context/ToastContext.jsx";
 import { handleApiError } from "../../utils/handleApiError.js";
-import { formatCurrency } from "../../utils/formatters.js";
 import FormTextarea from "../../components/common/FormTextarea.jsx";
 import StatusBadge from "../../components/common/StatusBadge.jsx";
 import Spinner from "../../components/common/Spinner.jsx";
 import BackButton from "../../components/common/BackButton.jsx";
+import ClaimDetailsView from "../../components/common/ClaimDetailsView.jsx";
 
 function ReviewClaimPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  
   const { data, isLoading } = useClaim(id);
   const reviewClaim = useReviewClaim();
-  const [selectedDoc, setSelectedDoc] = useState(null);
 
   const {
     register,
@@ -61,80 +60,22 @@ function ReviewClaimPage() {
   const isBusy = isSubmitting || reviewClaim.isPending;
 
   return (
-    <div className="p-6 max-w-2xl mx-auto space-y-6">
+    <div className="p-6 max-w-4xl mx-auto space-y-6">
       <BackButton />
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Review Claim</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Review Claim</h1>
+          <p className="text-gray-500 mt-1">{claim.claimNumber}</p>
+        </div>
         <StatusBadge status={claim.claimStatus} size="md" />
       </div>
 
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-base font-semibold border-b pb-3 mb-4">
-          Claim Details
-        </h2>
-        <dl className="grid grid-cols-2 gap-4 text-sm">
-          {[
-            ["Claim Number", claim.claimNumber],
-            ["Policy", claim.policyNumber],
-            ["Customer", claim.customerName],
-            ["Amount", formatCurrency(claim.claimAmount)],
-          ].map(([label, value]) => (
-            <div key={label}>
-              <dt className="text-xs font-medium text-gray-500 uppercase">
-                {label}
-              </dt>
-              <dd className="mt-1 text-gray-900">{value ?? "—"}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
-      
-      {claim.documents?.map((doc, i) => (
-  <li key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
-    <span className="text-sm text-gray-800">{doc.documentName}</span>
-    <button 
-      onClick={() => setSelectedDoc(doc)}
-      className="text-blue-600 underline text-sm"
-    >
-      Preview
-    </button>
-  </li>
-))}
+      <ClaimDetailsView claim={claim} />
 
-{selectedDoc && (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-    <div className="bg-white rounded-xl w-full max-w-4xl h-[85vh] flex flex-col shadow-2xl">
-      <div className="flex justify-between items-center p-4 border-b">
-        <h3 className="font-bold text-gray-900 truncate">{selectedDoc.documentName}</h3>
-        <button 
-          onClick={() => setSelectedDoc(null)} 
-          className="text-gray-500 hover:text-red-600 font-bold px-2"
-        >
-          Close
-        </button>
-      </div>
-      <div className="flex-grow overflow-hidden bg-gray-100">
-        {selectedDoc.documentReference.toLowerCase().endsWith('.pdf') ? (
-          <iframe 
-            src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedDoc.documentReference)}&embedded=true`} 
-            className="w-full h-full" 
-            title="PDF Preview"
-          />
-        ) : (
-          <img 
-            src={selectedDoc.documentReference} 
-            alt="Document Preview" 
-            className="w-full h-full object-contain"
-          />
-        )}
-      </div>
-    </div>
-  </div>
-)}
-
+      {/* Agent Review Action */}
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white rounded-xl border border-gray-200 p-6 space-y-5"
+        className="bg-white rounded-xl border border-gray-200 p-6 space-y-5 shadow-sm"
       >
         <fieldset>
           <legend className="text-sm font-medium text-gray-700 mb-2">
@@ -165,6 +106,7 @@ function ReviewClaimPage() {
             </p>
           )}
         </fieldset>
+        
         <FormTextarea
           label="Remarks"
           name="remarks"
@@ -173,6 +115,7 @@ function ReviewClaimPage() {
           error={errors.remarks?.message}
           {...register("remarks")}
         />
+        
         <div className="flex justify-end gap-3">
           <button
             type="button"
@@ -186,7 +129,7 @@ function ReviewClaimPage() {
             disabled={isBusy}
             className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
-            {isBusy ? "Submitting…" : "Submit Review"}
+            {isBusy ? "Submitting..." : "Submit Review"}
           </button>
         </div>
       </form>

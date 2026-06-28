@@ -26,7 +26,7 @@ export const useClaim = (id) =>
 export const useRaiseClaim = () => {
   const qc = useQueryClient()
   const { showToast } = useToast()
-  
+
   return useMutation({
     mutationFn: (data) => claimApi.raiseClaim(data).then((r) => r.data),
     onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.claims.all() }),
@@ -37,7 +37,7 @@ export const useRaiseClaim = () => {
 export const useReviewClaim = () => {
   const qc = useQueryClient()
   const { showToast } = useToast()
-  
+
   return useMutation({
     mutationFn: ({ id, data }) => claimApi.reviewClaim(id, data).then((r) => r.data),
     onSuccess: (_d, { id }) => {
@@ -51,7 +51,7 @@ export const useReviewClaim = () => {
 export const useApproveClaim = () => {
   const qc = useQueryClient()
   const { showToast } = useToast()
-  
+
   return useMutation({
     mutationFn: ({ id, remarks }) => claimApi.approveClaim(id, remarks).then((r) => r.data),
     onSuccess: (_d, { id }) => {
