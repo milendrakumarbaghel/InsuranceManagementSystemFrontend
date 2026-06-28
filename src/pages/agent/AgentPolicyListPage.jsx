@@ -1,77 +1,77 @@
-import { useState } from 'react'
-import { usePolicies } from '../../hooks/usePolicies.js'
-import { usePagination } from '../../hooks/usePagination.js'
-import { formatDate } from '../../utils/formatters.js'
-import DataTable from '../../components/common/DataTable.jsx'
-import StatusBadge from '../../components/common/StatusBadge.jsx'
-import BackButton from '../../components/common/BackButton.jsx'
-import { exportToPDF } from '../../utils/exportUtils';
-import SearchFilterBar from '../../components/common/SearchFilterBar.jsx'
+// import { useState } from 'react'
+// import { usePolicies } from '../../hooks/usePolicies.js'
+// import { usePagination } from '../../hooks/usePagination.js'
+// import { formatDate } from '../../utils/formatters.js'
+// import DataTable from '../../components/common/DataTable.jsx'
+// import StatusBadge from '../../components/common/StatusBadge.jsx'
+// import BackButton from '../../components/common/BackButton.jsx'
+// import { exportToPDF } from '../../utils/exportUtils';
+// import SearchFilterBar from '../../components/common/SearchFilterBar.jsx'
 
-const STATUS_OPTIONS = ['', 'PENDING_PAYMENT', 'ACTIVE', 'EXPIRED', 'CANCELLED']
+// const STATUS_OPTIONS = ['', 'PENDING_PAYMENT', 'ACTIVE', 'EXPIRED', 'CANCELLED']
 
-function AgentPolicyListPage() {
-  const [status, setStatus] = useState('')
-  const [filters, setFilters] = useState({ customerName: '', planName: '' });
-  const { params, page, pageSize, setPage, setPageSize } = usePagination()
-  const { data, isLoading } = usePolicies({ ...params, ...(status ? { status } : {}) })
+// function AgentPolicyListPage() {
+//   const [status, setStatus] = useState('')
+//   const [filters, setFilters] = useState({ customerName: '', planName: '' });
+//   const { params, page, pageSize, setPage, setPageSize } = usePagination()
+//   const { data, isLoading } = usePolicies({ ...params, ...(status ? { status } : {}) })
 
-  const records = data?.data?.content ?? data?.content ?? []
-  const totalPages = data?.data?.totalPages ?? data?.totalPages ?? 0
-  const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
+//   const records = data?.data?.content ?? data?.content ?? []
+//   const totalPages = data?.data?.totalPages ?? data?.totalPages ?? 0
+//   const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
 
-  const filteredRecords = records.filter((policy) => {
-    const matchesName = filters.customerName
-      ? policy.customerName?.toLowerCase().includes(filters.customerName.toLowerCase())
-      : true;
-    const matchesPlan = filters.planName
-      ? policy.planName?.toLowerCase().includes(filters.planName.toLowerCase())
-      : true;
-    return matchesName && matchesPlan;
-  });
+//   const filteredRecords = records.filter((policy) => {
+//     const matchesName = filters.customerName
+//       ? policy.customerName?.toLowerCase().includes(filters.customerName.toLowerCase())
+//       : true;
+//     const matchesPlan = filters.planName
+//       ? policy.planName?.toLowerCase().includes(filters.planName.toLowerCase())
+//       : true;
+//     return matchesName && matchesPlan;
+//   });
 
-  const filterConfig = [
-    { key: 'customerName', label: 'Customer Name', type: 'text' },
-    { key: 'planName', label: 'Plan Name', type: 'text' }
-  ];
+//   const filterConfig = [
+//     { key: 'customerName', label: 'Customer Name', type: 'text' },
+//     { key: 'planName', label: 'Plan Name', type: 'text' }
+//   ];
 
-  const handleFilterChange = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
+//   const handleFilterChange = (key, value) => {
+//     setFilters(prev => ({ ...prev, [key]: value }));
+//   };
 
-  const handleFilterReset = () => {
-    setFilters({ customerName: '', planName: '' });
-  };
+//   const handleFilterReset = () => {
+//     setFilters({ customerName: '', planName: '' });
+//   };
 
-  const columns = [
-    { key: 'policyNumber', header: 'Policy Number' },
-    { key: 'customerName', header: 'Customer' },
-    { key: 'planName', header: 'Plan' },
-    { key: 'status', header: 'Status', render: (row) => <StatusBadge status={row.status} /> },
-    { key: 'startDate', header: 'Start Date', render: (row) => formatDate(row.startDate) },
-  ]
+//   const columns = [
+//     { key: 'policyNumber', header: 'Policy Number' },
+//     { key: 'customerName', header: 'Customer' },
+//     { key: 'planName', header: 'Plan' },
+//     { key: 'status', header: 'Status', render: (row) => <StatusBadge status={row.status} /> },
+//     { key: 'startDate', header: 'Start Date', render: (row) => formatDate(row.startDate) },
+//   ]
 
 
-  return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <BackButton />
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Policies</h1>
-        <select value={status} onChange={(e) => setStatus(e.target.value)}
-          className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-          {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s || 'All Statuses'}</option>)}
-        </select>
-      </div>
-      <SearchFilterBar
-        filters={filterConfig}
-        values={filters}
-        onChange={handleFilterChange}
-        onReset={handleFilterReset}
-      />
-      <DataTable columns={columns} data={filteredRecords} isLoading={isLoading} emptyMessage="No policies found."
-        exportTitle="Agent Policies Report" paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
-    </div>
-  )
-}
+//   return (
+//     <div className="p-6 max-w-6xl mx-auto">
+//       <BackButton />
+//       <div className="mb-6 flex items-center justify-between">
+//         <h1 className="text-2xl font-bold text-gray-900">Policies</h1>
+//         <select value={status} onChange={(e) => setStatus(e.target.value)}
+//           className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+//           {STATUS_OPTIONS.map((s) => <option key={s} value={s}>{s || 'All Statuses'}</option>)}
+//         </select>
+//       </div>
+//       <SearchFilterBar
+//         filters={filterConfig}
+//         values={filters}
+//         onChange={handleFilterChange}
+//         onReset={handleFilterReset}
+//       />
+//       <DataTable columns={columns} data={filteredRecords} isLoading={isLoading} emptyMessage="No policies found."
+//         exportTitle="Agent Policies Report" paginationProps={{ currentPage: page, totalPages, pageSize, totalRecords: totalElements, onPageChange: setPage, onPageSizeChange: setPageSize }} />
+//     </div>
+//   )
+// }
 
-export default AgentPolicyListPage
+// export default AgentPolicyListPage
