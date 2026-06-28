@@ -7,7 +7,7 @@ function LandingPage() {
       <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/80 backdrop-blur">
         <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 text-white">
               🛡️
             </div>
 
@@ -36,7 +36,7 @@ function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50" />
+        <div className="absolute inset-0 bg-linear-to-br from-blue-50 via-white to-indigo-50" />
 
         <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-200/20 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-96 w-96 rounded-full bg-indigo-200/20 blur-3xl" />
@@ -48,7 +48,7 @@ function LandingPage() {
 
           <h1 className="mt-8 text-5xl font-bold leading-tight text-slate-900 md:text-6xl lg:text-7xl">
             Insurance
-            <span className="block bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+            <span className="block bg-linear-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               Made Simple
             </span>
           </h1>
@@ -157,7 +157,7 @@ function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 py-24 text-white">
+      <section className="bg-linear-to-r from-blue-600 to-indigo-700 py-24 text-white">
         <div className="mx-auto max-w-4xl px-6 text-center">
           <h2 className="text-4xl font-bold md:text-5xl">
             Ready to Get Started?
