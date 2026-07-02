@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatCurrency, formatDate } from "../../utils/formatters.js";
+import { formatCurrency, formatDate, formatDateTime } from "../../utils/formatters.js";
 import StatusBadge from "./StatusBadge.jsx";
 
 const DetailItem = ({ label, value }) => (
@@ -79,9 +79,25 @@ function ClaimDetailsView({ claim }) {
             <p className="text-xs font-medium text-gray-500 uppercase mb-2">Uploaded Documents</p>
             <ul className="space-y-2">
               {claim.documents.map((doc, i) => (
-                <li key={i} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border">
-                  <span className="text-sm text-gray-800">{doc.documentName}</span>
-                  <button onClick={() => setSelectedDoc(doc)} className="text-blue-600 underline text-sm font-medium hover:text-blue-800">Preview</button>
+                <li key={i} className="flex flex-col gap-2 rounded-lg border bg-gray-50 p-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">{doc.documentName}</p>
+                    <p className="text-xs text-gray-500">
+                      {doc.documentType ?? 'Document'}
+                      {doc.uploadedDate ? ` • Uploaded ${formatDateTime(doc.uploadedDate)}` : ''}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <a
+                      href={doc.documentReference}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded-md border border-blue-200 bg-white px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-50"
+                    >
+                      View / Download
+                    </a>
+                    <button onClick={() => setSelectedDoc(doc)} className="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-100">Preview</button>
+                  </div>
                 </li>
               ))}
             </ul>

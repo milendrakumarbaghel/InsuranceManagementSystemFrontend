@@ -10,6 +10,7 @@ function DataTable({
   isLoading = false,
   emptyMessage = 'No records found.',
   onRowClick,
+  getRowClassName,
   paginationProps,
   exportTitle
 }) {
@@ -115,7 +116,7 @@ function DataTable({
                     onRowClick
                       ? 'cursor-pointer hover:bg-blue-50'
                       : 'hover:bg-gray-50'
-                  }`}
+                  } ${getRowClassName ? getRowClassName(row) : ''}`}
                 >
                   {columns.map((col) => (
                     <td

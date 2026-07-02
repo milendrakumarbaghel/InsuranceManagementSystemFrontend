@@ -5,12 +5,13 @@ const STATUS_CLASS_MAP = {
   LAPSED:                'bg-gray-100 text-gray-600',
   EXPIRED:               'bg-gray-100 text-gray-600',
   CANCELLED:             'bg-red-100 text-red-700',
-  SUBMITTED:             'bg-blue-100 text-blue-800',
+  SUBMITTED:             'bg-gray-100 text-gray-700',
+  ASSIGNED:              'bg-blue-100 text-blue-800',
   UNDER_REVIEW:          'bg-indigo-100 text-indigo-800',
-  RECOMMENDED_APPROVAL:  'bg-teal-100 text-teal-800',
-  RECOMMENDED_REJECTION: 'bg-orange-100 text-orange-800',
-  APPROVED:              'bg-green-100 text-green-800',
-  REJECTED:              'bg-red-100 text-red-700',
+  RECOMMENDED_APPROVAL:  'border border-green-300 bg-green-50 text-green-700',
+  RECOMMENDED_REJECTION: 'border border-red-300 bg-red-50 text-red-700',
+  APPROVED:              'bg-green-600 text-white',
+  REJECTED:              'bg-red-600 text-white',
   // INACTIVE is used by admin user/product/plan toggles
   INACTIVE:              'bg-gray-100 text-gray-600',
 }
