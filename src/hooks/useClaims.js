@@ -10,6 +10,12 @@ export const useClaims = (params) =>
     queryFn: () => claimApi.getClaims(params).then((r) => r.data),
   })
 
+export const useAssignedClaims = (params) =>
+  useQuery({
+    queryKey: queryKeys.claims.assigned(params),
+    queryFn: () => claimApi.getAssignedClaims(params).then((r) => r.data),
+  })
+
 export const useMyClaims = (params) =>
   useQuery({
     queryKey: queryKeys.claims.mine(params),
@@ -53,7 +59,7 @@ export const useApproveClaim = () => {
   const { showToast } = useToast()
 
   return useMutation({
-    mutationFn: ({ id, remarks }) => claimApi.approveClaim(id, remarks).then((r) => r.data),
+    mutationFn: ({ id, remarks }) => claimApi.approveClaim(id, { remarks }).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
       qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
@@ -67,11 +73,26 @@ export const useRejectClaim = () => {
   const { showToast } = useToast()
   
   return useMutation({
-    mutationFn: ({ id, remarks }) => claimApi.rejectClaim(id, remarks).then((r) => r.data),
+    mutationFn: ({ id, remarks }) => claimApi.rejectClaim(id, { remarks }).then((r) => r.data),
     onSuccess: (_d, { id }) => {
       qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
       qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
     },
     onError: (error) => handleApiError(error, showToast)
+  })
+}
+
+export const useAssignClaim = () => {
+  const qc = useQueryClient()
+  const { showToast } = useToast()
+
+  return useMutation({
+    mutationFn: ({ id, agentId }) => claimApi.assignClaim(id, { agentId }).then((r) => r.data),
+    onSuccess: (_d, { id }) => {
+      qc.invalidateQueries({ queryKey: queryKeys.claims.all() })
+      qc.invalidateQueries({ queryKey: queryKeys.claims.detail(id) })
+      qc.invalidateQueries({ queryKey: queryKeys.claims.assigned() })
+    },
+    onError: (error) => handleApiError(error, showToast),
   })
 }
