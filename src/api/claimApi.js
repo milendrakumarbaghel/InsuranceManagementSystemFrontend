@@ -1,7 +1,30 @@
 import axiosInstance from './axiosInstance.js'
 
+function buildPagedParams(params = {}, defaultSortBy) {
+  const {
+    page = 0,
+    pageSize,
+    size,
+    sort,
+    sortBy,
+    sortDir,
+    ...rest
+  } = params
+
+  return {
+    page,
+    size: size ?? pageSize,
+    sortBy: sortBy ?? sort ?? defaultSortBy,
+    sortDir,
+    ...rest,
+  }
+}
+
 export const getClaims = (params) =>
-  axiosInstance.get('/claims', { params })
+  axiosInstance.get('/claims', { params: buildPagedParams(params, 'id') })
+
+export const getAssignedClaims = (params) =>
+  axiosInstance.get('/claims/assigned', { params: buildPagedParams(params, 'assignedAt') })
 
 export const getMyClaims = (params) =>
   axiosInstance.get('/claims/my', { params })
@@ -30,8 +53,11 @@ export const deleteClaimDocument = (documentId) =>
 export const reviewClaim = (id, data) =>
   axiosInstance.put(`/claims/${id}/review`, data)
 
-export const approveClaim = (id, remarks) =>
-  axiosInstance.put(`/claims/${id}/approve`, null, { params: { remarks } })
+export const assignClaim = (id, data) =>
+  axiosInstance.put(`/claims/${id}/assign`, data)
 
-export const rejectClaim = (id, remarks) =>
-  axiosInstance.put(`/claims/${id}/reject`, null, { params: { remarks } })
+export const approveClaim = (id, data) =>
+  axiosInstance.put(`/claims/${id}/approve`, data)
+
+export const rejectClaim = (id, data) =>
+  axiosInstance.put(`/claims/${id}/reject`, data)

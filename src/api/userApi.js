@@ -3,6 +3,9 @@ import axiosInstance from './axiosInstance.js'
 export const getUsers = (params) =>
   axiosInstance.get('/users', { params })
 
+export const getAdminUsers = (params) =>
+  axiosInstance.get('/admin/users', { params })
+
 export const getUserById = (id) =>
   axiosInstance.get(`/users/${id}`)
 
