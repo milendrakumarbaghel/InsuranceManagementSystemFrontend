@@ -28,6 +28,7 @@ export const queryKeys = {
   claims: {
     all: () => ['claims'],
     list: (params) => ['claims', 'list', params],
+    assigned: (params) => (params ? ['claims', 'assigned', params] : ['claims', 'assigned']),
     mine: (params) => ['claims', 'mine', params],
     detail: (id) => ['claims', 'detail', id],
     history: (claimId) => ['claims', 'history', claimId],
