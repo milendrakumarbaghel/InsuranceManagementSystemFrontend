@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useClaims, useAssignClaim } from '../../hooks/useClaims.js'
-import { useAdminUsers } from '../../hooks/useUsers.js'
+import { useAgents } from '../../hooks/useUsers.js'
 import { usePagination } from '../../hooks/usePagination.js'
 import { formatCurrency, formatDate, getEnumOptions } from '../../utils/formatters.js'
 import { CLAIM_STATUSES } from '../../utils/constants.js'
@@ -34,19 +34,15 @@ function AdminClaimListPage() {
   const queryParams = { ...params, ...filters }
   const { data, isLoading } = useClaims(queryParams)
   const assignClaim = useAssignClaim()
-  const { data: agentsData, isLoading: isAgentsLoading } = useAdminUsers({
-    role: 'AGENT',
-    active: true,
-    page: 0,
-    size: 100,
-    sortBy: 'username',
-    sortDir: 'asc',
-  })
+  const { data: agentsData, isLoading: isAgentsLoading } = useAgents()
 
   const records = data?.data?.content ?? data?.content ?? []
   const totalPages = data?.data?.totalPages ?? data?.totalPages ?? 0
   const totalElements = data?.data?.totalElements ?? data?.totalElements ?? 0
-  const agents = agentsData?.data?.content ?? agentsData?.content ?? []
+  const agentsPayload = agentsData?.data ?? agentsData
+  const agents = Array.isArray(agentsPayload)
+    ? agentsPayload
+    : agentsPayload?.content ?? []
 
   const filteredClaims = useMemo(() => {
     return records.filter((claim) => {

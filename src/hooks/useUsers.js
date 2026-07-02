@@ -13,6 +13,12 @@ export const useAdminUsers = (params) =>
     queryFn: () => userApi.getAdminUsers(params).then((r) => r.data),
   })
 
+export const useAgents = () =>
+  useQuery({
+    queryKey: ['users', 'agents'],
+    queryFn: () => userApi.getAgents().then((r) => r.data),
+  })
+
 export const useCreateAgent = () => {
   const qc = useQueryClient()
   return useMutation({

@@ -4,7 +4,10 @@ export const getUsers = (params) =>
   axiosInstance.get('/users', { params })
 
 export const getAdminUsers = (params) =>
-  axiosInstance.get('/admin/users', { params })
+  axiosInstance.get('/users', { params })
+
+export const getAgents = () =>
+  axiosInstance.get('/users/agents')
 
 export const getUserById = (id) =>
   axiosInstance.get(`/users/${id}`)
