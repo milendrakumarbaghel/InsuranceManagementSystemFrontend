@@ -153,7 +153,6 @@ import NotFoundPage from '../pages/shared/NotFoundPage.jsx'
 // --- UNIFIED SHARED COMPONENTS ---
 import SharedCustomerDetailPage from '../pages/shared/SharedCustomerDetailPage.jsx'
 import SharedPolicyListPage from '../pages/shared/SharedPolicyListPage.jsx'
-import SharedClaimListPage from '../pages/shared/SharedClaimListPage.jsx'
 
 // Admin pages
 import AdminDashboard from '../pages/admin/AdminDashboard.jsx'
@@ -163,6 +162,7 @@ import PlanListPage from '../pages/admin/PlanListPage.jsx'
 import PlanFormPage from '../pages/admin/PlanFormPage.jsx'
 import UserListPage from '../pages/admin/UserListPage.jsx'
 import CreateAgentPage from '../pages/admin/CreateAgentPage.jsx'
+import AdminClaimListPage from '../pages/admin/AdminClaimListPage.jsx'
 import ClaimDecisionPage from '../pages/admin/ClaimDecisionPage.jsx'
 import AllPaymentsPage from '../pages/admin/AllPaymentsPage.jsx'
 
@@ -185,6 +185,7 @@ import AgentDashboard from '../pages/agent/AgentDashboard.jsx'
 import CustomerListPage from '../pages/agent/CustomerListPage.jsx'
 import IssuePolicyPage from '../pages/agent/IssuePolicyPage.jsx'
 import AgentPaymentListPage from '../pages/agent/AgentPaymentListPage.jsx'
+import AgentClaimQueuePage from '../pages/agent/AgentClaimQueuePage.jsx'
 import ReviewClaimPage from '../pages/agent/ReviewClaimPage.jsx'
 
 
@@ -237,7 +238,7 @@ function AppRouter() {
           <Route path="/agent/policies/issue" element={<IssuePolicyPage />} />
           <Route path="/agent/policies" element={<SharedPolicyListPage />} />
           <Route path="/agent/payments" element={<AgentPaymentListPage />} />
-          <Route path="/agent/claims" element={<SharedClaimListPage />} />
+          <Route path="/agent/claims" element={<AgentClaimQueuePage />} />
           <Route path="/agent/claims/:id/review" element={<ReviewClaimPage />} />
         </Route>
       </Route>
@@ -255,7 +256,7 @@ function AppRouter() {
           <Route path="/admin/plans/new" element={<PlanFormPage />} />
           <Route path="/admin/plans/:id/edit" element={<PlanFormPage />} />
           <Route path="/admin/policies" element={<SharedPolicyListPage />} />
-          <Route path="/admin/claims" element={<SharedClaimListPage />} />
+          <Route path="/admin/claims" element={<AdminClaimListPage />} />
           <Route path="/admin/claims/:id/decide" element={<ClaimDecisionPage />} />
           <Route path="/admin/payments" element={<AllPaymentsPage />} />
           <Route path="/admin/customers/:id" element={<SharedCustomerDetailPage idType="userId" />} />   
